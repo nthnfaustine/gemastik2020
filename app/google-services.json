@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "193793225646",
+    "firebase_url": "https://gemastikapp.firebaseio.com",
+    "project_id": "gemastikapp",
+    "storage_bucket": "gemastikapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:193793225646:android:ef8e08bab1575d25fe8e3f",
+        "android_client_info": {
+          "package_name": "com.example.gemastik"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "193793225646-uksuskbjrk59103uftujf5h732h4foi5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDiv18o9F0Ez7_I-jvhcntNKtItCfAhIt8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "193793225646-uksuskbjrk59103uftujf5h732h4foi5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
