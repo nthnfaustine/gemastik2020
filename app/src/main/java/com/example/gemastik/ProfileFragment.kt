@@ -11,7 +11,7 @@ class ProfileFragment: Fragment() {
     private lateinit var rootView: View
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?{
-        rootView = inflater.inflate(R.layout.fragment_profile, container, false)
+        rootView = inflater.inflate(R.layout.profile_fragment, container, false)
         setHasOptionsMenu(true)
         return rootView
     }
