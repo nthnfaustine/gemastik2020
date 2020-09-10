@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/bottomSheet"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:behavior_hideable="false"
+    app:behavior_peekHeight="32dp"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+    android:background="@drawable/bottomsheet">
+
+    <ImageView
+        android:id="@+id/logomenu"
+        android:layout_width="150dp"
+        android:layout_height="24dp"
+        android:background="@drawable/ic_baseline_drag_handle_24"
+        android:backgroundTint="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/white"
+        tools:ignore="ContentDescription" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="110dp"
+        android:orientation="horizontal"
+        android:weightSum="3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/logomenu"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:layout_marginTop="12dp"
+        android:paddingBottom="12dp">
+
+        <RadioButton
+            android:id="@+id/rb_pemerintah"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:checked="true"
+            android:background="@drawable/rb_pemerintah_sheet"
+            android:layout_marginEnd="12dp"
+            android:text="@string/pemerintah"
+            android:textSize="14sp"
+            android:textColor="@color/tulisan_sheet"
+            android:button="@null"
+            android:gravity="center"
+            android:drawableTop="@drawable/ic_pemerintah"
+            android:paddingTop="10dp"
+            android:drawableTint="@color/tulisan_sheet"
+            android:textStyle="bold"
+            tools:ignore="UnusedAttribute" />
+
+        <RadioButton
+            android:id="@+id/rb_realtime"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:paddingTop="10dp"
+            android:background="@drawable/rb_pemerintah_sheet"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:button="@null"
+            android:drawableTop="@drawable/realtime"
+            android:drawableTint="@color/tulisan_sheet"
+            android:layout_gravity="center"
+            android:text="@string/realtime"
+            android:textSize="14sp"
+            android:textColor="@color/tulisan_sheet"
+            android:gravity="center"
+            android:textStyle="bold"
+            tools:ignore="UnusedAttribute" />
+
+        <RadioButton
+            android:id="@+id/rb_prediksi"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/rb_pemerintah_sheet"
+            android:layout_marginStart="12dp"
+            android:button="@color/transparent"
+            android:drawableTop="@drawable/prediction"
+            android:paddingTop="10dp"
+            android:drawableTint="@color/tulisan_sheet"
+            android:text="@string/prediksi"
+            android:gravity="center"
+            android:textColor="@color/tulisan_sheet"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            tools:ignore="UnusedAttribute" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

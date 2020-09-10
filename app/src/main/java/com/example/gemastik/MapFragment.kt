@@ -1,11 +1,15 @@
+@file:Suppress("DEPRECATION")
+
 package com.example.gemastik
 
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Activity.RESULT_OK
+import android.content.ComponentName
 import android.content.Intent
 import android.content.IntentSender
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.location.Address
 import android.location.Geocoder
 import android.location.Location
@@ -14,24 +18,31 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RadioButton
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
+import androidx.core.app.ShareCompat
 import androidx.fragment.app.Fragment
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException
-import com.google.android.gms.common.GooglePlayServicesRepairableException
 import com.google.android.gms.common.api.ResolvableApiException
+import com.google.android.gms.common.api.Status
 import com.google.android.gms.location.*
-import com.google.android.gms.location.places.ui.PlacePicker
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.Marker
-import com.google.android.gms.maps.model.MarkerOptions
-import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.gms.maps.model.*
+import com.google.android.libraries.places.api.Places
+import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.api.net.PlacesClient
+import com.google.android.libraries.places.widget.Autocomplete
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import kotlinx.android.synthetic.main.bottomsheet.view.*
 import java.io.IOException
 
+@Suppress("DEPRECATION")
 class MapFragment: Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
     private lateinit var map: GoogleMap
@@ -41,6 +52,14 @@ class MapFragment: Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListen
     private lateinit var locationCallback: LocationCallback
     private lateinit var locationRequest: LocationRequest
     private var locationUpdateState = false
+
+    private lateinit var bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>
+    private var rbPemerintah: RadioButton? = null
+    private var rbRealtime: RadioButton? = null
+    private var rbPrediksi: RadioButton? = null
+    private var flag = true
+
+    private var autocompleteFragment: AutocompleteSupportFragment? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?{
         rootView = inflater.inflate(R.layout.activity_maps, container, false)
@@ -63,12 +82,44 @@ class MapFragment: Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListen
 
         createLocationRequest()
 
-        val fab = rootView.findViewById<FloatingActionButton>(R.id.fab)
-        fab.setOnClickListener {
-            loadPlacePicker()
-        }
+        bottomSheetBehavior = BottomSheetBehavior.from(rootView.bottomSheet)
 
+        bottomSheetBehavior.addBottomSheetCallback(object :
+            BottomSheetBehavior.BottomSheetCallback() {
 
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+                // handle onSlide
+            }
+
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+//                when (newState) {
+////                    BottomSheetBehavior.STATE_COLLAPSED -> Toast.makeText(activity, "STATE_COLLAPSED", Toast.LENGTH_SHORT).show()
+////                    BottomSheetBehavior.STATE_EXPANDED -> Toast.makeText(activity, "STATE_EXPANDED", Toast.LENGTH_SHORT).show()
+////                    BottomSheetBehavior.STATE_DRAGGING -> Toast.makeText(activity, "STATE_DRAGGING", Toast.LENGTH_SHORT).show()
+////                    BottomSheetBehavior.STATE_SETTLING -> Toast.makeText(activity, "STATE_SETTLING", Toast.LENGTH_SHORT).show()
+////                    BottomSheetBehavior.STATE_HIDDEN -> Toast.makeText(activity, "STATE_HIDDEN", Toast.LENGTH_SHORT).show()
+////                    else -> Toast.makeText(activity, "OTHER_STATE", Toast.LENGTH_SHORT).show()
+//                }
+            }
+        })
+
+        Places.initialize(context!!, getString(R.string.google_maps_key))
+
+        val fields = listOf(Place.Field.ID, Place.Field.NAME)
+
+        autocompleteFragment = childFragmentManager.findFragmentById(R.id.place_autocomplete) as AutocompleteSupportFragment
+        autocompleteFragment!!.setPlaceFields(fields)
+
+        autocompleteFragment!!.setOnPlaceSelectedListener(object:com.google.android.libraries.places.widget.listener.PlaceSelectionListener {
+            override fun onPlaceSelected(place: Place) {
+                Log.d("Maps", "Place selected: " + place.name)
+            }
+            override fun onError(p0: Status) {
+                Log.d("Maps", "An error occurred:")
+            }
+        })
+
+        initializeRb()
         return rootView
     }
 
@@ -78,6 +129,7 @@ class MapFragment: Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListen
         private const val LOCATION_PERMISSION_REQUEST_CODE = 1
         private const val REQUEST_CHECK_SETTINGS = 2
         private const val PLACE_PICKER_REQUEST = 3
+        private const val AUTOCOMPLETE_REQUEST_CODE = 4
         fun newInstance(): MapFragment{
             val fragment = MapFragment()
             val args = Bundle()
@@ -91,7 +143,10 @@ class MapFragment: Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListen
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
 
-        map.uiSettings.isZoomControlsEnabled = true
+        map.uiSettings.isZoomControlsEnabled = false
+        map.uiSettings.isMapToolbarEnabled = false
+        map.uiSettings.isCompassEnabled = false
+        map.uiSettings.isMyLocationButtonEnabled = false
         map.setOnMarkerClickListener(this)
 
         setUpMap()
@@ -138,7 +193,6 @@ class MapFragment: Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListen
 
         map.addMarker(markerOptions)
     }
-
 
     private fun getAddress(latLng: LatLng): String {
         val geocoder = Geocoder(activity as AppCompatActivity)
@@ -214,15 +268,15 @@ class MapFragment: Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListen
                 startLocationUpdates()
             }
         }
-        if (requestCode == PLACE_PICKER_REQUEST) {
-            if (resultCode == RESULT_OK) {
-                val place = PlacePicker.getPlace(activity, data)
-                var addressText = place.name.toString()
-                addressText += "\n" + place.address.toString()
-
-                placeMarkerOnMap(place.latLng)
-            }
-        }
+//        if (requestCode == PLACE_PICKER_REQUEST) {
+//            if (resultCode == RESULT_OK) {
+//                val place = PlacePicker.getPlace(activity, data)
+//                var addressText = place.name.toString()
+//                addressText += "\n" + place.address.toString()
+//
+//                placeMarkerOnMap(place.latLng)
+//            }
+//        }
 
     }
 
@@ -238,17 +292,77 @@ class MapFragment: Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListen
         }
     }
 
-    private fun loadPlacePicker() {
-        val builder = PlacePicker.IntentBuilder()
+//    private fun loadPlacePicker() {
+//        val builder = PlacePicker.IntentBuilder()
+//
+//        try {
+//            startActivityForResult(builder.build(activity), PLACE_PICKER_REQUEST)
+//        } catch (e: GooglePlayServicesRepairableException) {
+//            e.printStackTrace()
+//        } catch (e: GooglePlayServicesNotAvailableException) {
+//            e.printStackTrace()
+//        }
+//    }
 
-        try {
-            startActivityForResult(builder.build(activity), PLACE_PICKER_REQUEST)
-        } catch (e: GooglePlayServicesRepairableException) {
-            e.printStackTrace()
-        } catch (e: GooglePlayServicesNotAvailableException) {
-            e.printStackTrace()
+    private fun initializeRb(){
+        rbPemerintah = rootView.findViewById(R.id.rb_pemerintah)
+        rbRealtime = rootView.findViewById(R.id.rb_realtime)
+        rbPrediksi = rootView.findViewById(R.id.rb_prediksi)
+
+        rbPemerintah!!.setOnClickListener {
+            rbPemerintah!!.isChecked = true
+            rbRealtime!!.isChecked = false
+            rbPrediksi!!.isChecked = false
+            flag = true
+
+            aktifinMode()
+        }
+
+        rbRealtime!!.setOnClickListener {
+            rbPemerintah!!.isChecked = false
+            rbRealtime!!.isChecked = true
+            rbPrediksi!!.isChecked = false
+            flag = false
+
+            aktifinMode()
+        }
+
+        rbPrediksi!!.setOnClickListener {
+            rbPemerintah!!.isChecked = false
+            rbRealtime!!.isChecked = false
+            rbPrediksi!!.isChecked = true
+
+            flag = false
+
+            aktifinMode()
         }
     }
 
+    private fun buatCircleJakarta(){
+        val circleOptions = CircleOptions()
+            .center(LatLng(-6.2088, 106.8456))
+            .radius(10000.0)
+            .fillColor(Color.argb(128, 255, 0, 0))
+        val circle = map.addCircle(circleOptions)
+        if(!flag){
+            circle.radius = 0.0
+        }
+    }
 
+    private fun buatCircleTangerang(){
+        val circleOptions = CircleOptions()
+            .center(LatLng(-6.1702, 106.6403))
+            .radius(10000.0)
+            .fillColor(Color.argb(128, 255, 255, 0))
+        val circle = map.addCircle(circleOptions)
+        if(!flag){
+            circle.radius = 0.0
+        }
+    }
+
+    private fun aktifinMode(){
+        buatCircleJakarta()
+        buatCircleTangerang()
+    }
+    
 }
