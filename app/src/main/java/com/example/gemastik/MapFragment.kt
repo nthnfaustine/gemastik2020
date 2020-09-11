@@ -1,11 +1,10 @@
-@file:Suppress("DEPRECATION")
+@file:Suppress("DEPRECATION", "SameParameterValue")
 
 package com.example.gemastik
 
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Activity.RESULT_OK
-import android.content.ComponentName
 import android.content.Intent
 import android.content.IntentSender
 import android.content.pm.PackageManager
@@ -22,7 +21,6 @@ import android.widget.RadioButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
-import androidx.core.app.ShareCompat
 import androidx.fragment.app.Fragment
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.common.api.Status
@@ -34,13 +32,13 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
-import com.google.android.libraries.places.api.net.PlacesClient
-import com.google.android.libraries.places.widget.Autocomplete
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment
-import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.maps.android.heatmaps.HeatmapTileProvider
 import kotlinx.android.synthetic.main.bottomsheet.view.*
+import org.json.JSONArray
 import java.io.IOException
+import com.google.maps.android.heatmaps.WeightedLatLng
 
 @Suppress("DEPRECATION")
 class MapFragment: Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
@@ -57,7 +55,10 @@ class MapFragment: Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListen
     private var rbPemerintah: RadioButton? = null
     private var rbRealtime: RadioButton? = null
     private var rbPrediksi: RadioButton? = null
-    private var flag = true
+    private var circleJakarta: Circle? = null
+    private var circleTangerang:Circle? = null
+    private var heatmapOverlay: TileOverlay? = null
+    private var stateMap: Int = 1
 
     private var autocompleteFragment: AutocompleteSupportFragment? = null
 
@@ -161,6 +162,7 @@ class MapFragment: Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListen
             }
         }
 
+        modePemerintah()
     }
 
     override fun onMarkerClick(p0: Marker?) = false
@@ -313,18 +315,25 @@ class MapFragment: Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListen
             rbPemerintah!!.isChecked = true
             rbRealtime!!.isChecked = false
             rbPrediksi!!.isChecked = false
-            flag = true
 
-            aktifinMode()
+            if(stateMap != 1){
+                heatmapOverlay!!.remove()
+                modePemerintah()
+                stateMap = 1
+            }
         }
 
         rbRealtime!!.setOnClickListener {
             rbPemerintah!!.isChecked = false
             rbRealtime!!.isChecked = true
             rbPrediksi!!.isChecked = false
-            flag = false
 
-            aktifinMode()
+            if(stateMap != 2){
+                circleJakarta!!.remove()
+                circleTangerang!!.remove()
+                modeHeatmap()
+                stateMap = 2
+            }
         }
 
         rbPrediksi!!.setOnClickListener {
@@ -332,10 +341,34 @@ class MapFragment: Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListen
             rbRealtime!!.isChecked = false
             rbPrediksi!!.isChecked = true
 
-            flag = false
-
-            aktifinMode()
+            if(stateMap != 3){
+                circleJakarta!!.remove()
+                circleTangerang!!.remove()
+                modePrediksi()
+                stateMap = 3
+            }
         }
+    }
+
+    private fun modePemerintah(){
+        buatCircleJakarta()
+        buatCircleTangerang()
+    }
+
+    private fun modeHeatmap(){
+        val data = generateHeatMapData()
+
+        val heatMapProvider = HeatmapTileProvider.Builder()
+            .weightedData(data) // load our weighted data
+            .radius(50) // optional, in pixels, can be anything between 20 and 50
+            .maxIntensity(1000.0) // set the maximum intensity
+            .build()
+
+        heatmapOverlay = map.addTileOverlay(TileOverlayOptions().tileProvider(heatMapProvider))
+    }
+
+    private fun modePrediksi(){
+        modeHeatmap()
     }
 
     private fun buatCircleJakarta(){
@@ -343,10 +376,8 @@ class MapFragment: Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListen
             .center(LatLng(-6.2088, 106.8456))
             .radius(10000.0)
             .fillColor(Color.argb(128, 255, 0, 0))
-        val circle = map.addCircle(circleOptions)
-        if(!flag){
-            circle.radius = 0.0
-        }
+            .strokeWidth(0.0F)
+        circleJakarta = map.addCircle(circleOptions)
     }
 
     private fun buatCircleTangerang(){
@@ -354,15 +385,38 @@ class MapFragment: Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListen
             .center(LatLng(-6.1702, 106.6403))
             .radius(10000.0)
             .fillColor(Color.argb(128, 255, 255, 0))
-        val circle = map.addCircle(circleOptions)
-        if(!flag){
-            circle.radius = 0.0
-        }
+            .strokeWidth(0.0F)
+        circleTangerang = map.addCircle(circleOptions)
     }
 
-    private fun aktifinMode(){
-        buatCircleJakarta()
-        buatCircleTangerang()
+    private fun generateHeatMapData(): ArrayList<WeightedLatLng> {
+        val data = ArrayList<WeightedLatLng>()
+
+        val jsonData = getJsonDataFromAsset("dataset.json")
+        jsonData?.let {
+            for (i in 0 until it.length()) {
+                val entry = it.getJSONObject(i)
+                val lat = entry.getDouble("latitude")
+                val lon = entry.getDouble("longitude")
+                val density = entry.getDouble("density")
+
+                if (density != 0.0) {
+                    val weightedLatLng = WeightedLatLng(LatLng(lat, lon), density)
+                    data.add(weightedLatLng)
+                }
+            }
+        }
+        return data
+    }
+
+    private fun getJsonDataFromAsset(fileName: String): JSONArray? {
+        return try {
+            val jsonString = context!!.assets.open(fileName).bufferedReader().use { it.readText() }
+            JSONArray(jsonString)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
     }
     
 }
