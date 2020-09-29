@@ -392,7 +392,7 @@ class MapFragment: Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListen
     private fun generateHeatMapData(): ArrayList<WeightedLatLng> {
         val data = ArrayList<WeightedLatLng>()
 
-        val jsonData = getJsonDataFromAsset("dataset.json")
+        val jsonData = getJsonDataFromAsset("datasetfathan.json")
         jsonData?.let {
             for (i in 0 until it.length()) {
                 val entry = it.getJSONObject(i)
