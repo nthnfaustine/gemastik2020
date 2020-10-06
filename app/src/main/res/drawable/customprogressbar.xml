@@ -4,12 +4,7 @@
     <item android:id="@android:id/background">
         <shape>
             <corners android:radius="25dp"/>
-            <gradient
-                android:startColor="#e95c48"
-                android:centerColor="#e95c48"
-                android:endColor="#e95c48"
-                android:centerY="1.0"
-                android:angle="270"/>
+            <solid android:color="@color/white"/>
         </shape>
     </item>
 
@@ -19,14 +14,12 @@
                 <corners
                     android:topLeftRadius="55dp"
                     android:bottomLeftRadius="55dp"
-                    android:topRightRadius="15dp"
-                    android:bottomRightRadius="15dp"/>
+                    android:topRightRadius="55dp"
+                    android:bottomRightRadius="55dp"/>
                 <gradient
-                    android:startColor="#00916f"
-                    android:centerColor="#ff4500"
-                    android:centerX="1.0"
-                    android:endColor="#ff4500"
-                    android:angle="180"/>
+                    android:startColor="@color/white"
+                    android:endColor="@color/secondaryBawahTengah"
+                    android:angle="0"/>
             </shape>
         </clip>
     </item>

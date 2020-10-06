@@ -12,10 +12,10 @@
         android:orientation="vertical">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout"
+            android:id="@+id/yuhu"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:background="@drawable/rect_themelain"
+            android:layout_height="390dp"
+            android:background="@drawable/background_mainpage"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -27,23 +27,133 @@
                 android:text="Nathaniel Faustine"
                 android:textColor="@color/white"
                 android:textSize="20sp"
+                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageView" />
+                app:layout_constraintTop_toBottomOf="@+id/imageView"
+                tools:ignore="HardcodedText" />
 
-            <TextView
-                android:id="@+id/tulisan"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:text="Jangan lupa jaga kesehatan"
-                android:textColor="@color/lgray"
-                android:textSize="12sp"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="220dp"
+                android:background="@drawable/round_rect_putih"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView" />
+                app:layout_constraintTop_toBottomOf="@id/textView"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginTop="8dp"
+                android:elevation="10dp">
 
-             <ImageView
+                <ImageView
+                    android:id="@+id/gambar_lokasi"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="12dp"
+                    android:src="@drawable/ic_baseline_location_on_24"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="@color/secondaryBawahTengah" />
+
+                <TextView
+                    android:id="@+id/tv_lokasi"
+                    android:layout_width="190dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginTop="12dp"
+                    android:text="Serpong Utara, Tangerang Selatan"
+                    android:textColor="@color/secondaryBawahTengah"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toEndOf="@id/gambar_lokasi"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/gambar_zona"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="16dp"
+                    android:src="@drawable/ic_zona"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/gambar_lokasi"
+                    app:tint="@color/secondaryBawahTengah" />
+
+                <TextView
+                    android:id="@+id/tv_zona"
+                    android:layout_width="190dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginTop="8dp"
+                    android:text="Anda berada dalam zona merah"
+                    android:textColor="@color/secondaryBawahTengah"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toEndOf="@id/gambar_lokasi"
+                    app:layout_constraintTop_toBottomOf="@id/tv_lokasi" />
+
+                <TextView
+                    android:id="@+id/tvv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginTop="8dp"
+                    android:text="Reputasi Anda"
+                    android:textColor="@color/secondaryBawahTengah"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_zona" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="280dp"
+                    android:layout_height="65dp"
+                    android:background="@drawable/secondary_background"
+                    app:layout_constraintTop_toBottomOf="@id/tvv"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginTop="8dp" >
+
+                    <ProgressBar
+                        android:id="@+id/progressbar"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="220dp"
+                        android:layout_height="15dp"
+                        android:layout_marginTop="15dp"
+                        android:max="100"
+                        android:minWidth="100dp"
+                        android:minHeight="15dp"
+                        android:progress="90"
+                        android:progressDrawable="@drawable/customprogressbar"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.492"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Mengagumkan"
+                        android:textSize="16sp"
+                        app:layout_constraintTop_toBottomOf="@id/progressbar"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:textColor="@color/white"
+                        android:layout_marginTop="8dp"/>
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+            <ImageView
                 android:id="@+id/imageView"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
@@ -53,162 +163,110 @@
                 app:layout_constraintHorizontal_bias="0.498"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.088"
                 app:tint="@color/white" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <LinearLayout
-            android:id="@+id/yuhu"
+            android:id="@+id/btn_realtime"
             android:layout_width="match_parent"
             android:layout_height="80dp"
-            android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/constraintLayout"
-            android:weightSum="2"
-            android:baselineAligned="false">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="200dp"
-                android:layout_height="80dp"
-                android:background="@drawable/rect_secondary"
-                android:layout_weight="1">
-
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@drawable/ic_baseline_location_on_24"
-                    app:tint="@color/colorPrimaryDark"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.088"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.29" />
-
-                <TextView
-                    android:layout_width="110dp"
-                    android:layout_height="wrap_content"
-                    android:text="Serpong Utara, Tangerang Selatan"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textSize="14sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:gravity="center"/>
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="200dp"
-                android:layout_height="80dp"
-                android:background="@drawable/rect_theme"
-                android:layout_weight="1">
-
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@drawable/warning"
-                    app:tint="@color/white"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.088"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.29" />
-
-                <TextView
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:text="Anda berada dalam zona hijau"
-                    android:textColor="@color/white"
-                    android:textSize="14sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:gravity="center"/>
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </LinearLayout>
-
-        <Button
-            android:id="@+id/btn_realtime"
-            android:layout_width="350dp"
-            android:layout_height="50dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="22dp"
-            android:background="@drawable/round_rect_theme"
-            android:text="Aktifkan realtime warning"
-            android:textColor="@color/white"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/yuhu" />
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/reputasi"
-            android:layout_width="match_parent"
-            android:layout_height="110dp"
             android:layout_marginTop="20dp"
-            android:background="@drawable/round_rect_red"
+            android:background="@drawable/secondary_background"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btn_realtime"
-            android:layout_marginStart="12dp"
-            android:layout_marginEnd="12dp">
+            app:layout_constraintTop_toBottomOf="@id/yuhu"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:padding="8dp"
+            android:orientation="horizontal"
+            android:weightSum="10">
 
             <TextView
-                android:id="@+id/tulisan_reputasi"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:text="REPUTASI ANDA"
-                android:textStyle="bold"
+                android:layout_weight="7"
+                android:text="Realtime Warning"
                 android:textColor="@color/white"
-                android:textSize="16sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:layout_gravity="center"
+                android:layout_marginStart="12dp"
+                android:gravity="center"/>
 
-            <ProgressBar
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="320dp"
-                android:layout_height="15dp"
-                android:layout_marginTop="20dp"
-                android:max="100"
-                android:minWidth="320dp"
-                android:minHeight="15dp"
-                android:progress="90"
-                android:progressDrawable="@drawable/customprogressbar"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.492"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tulisan_reputasi" />
+            <androidx.appcompat.widget.SwitchCompat
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:layout_gravity="center"/>
+
+        </LinearLayout>
+
+<!--        <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--            android:id="@+id/reputasi"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="110dp"-->
+<!--            android:layout_marginTop="20dp"-->
+<!--            android:background="@drawable/round_rect_red"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/yuhu"-->
+<!--            android:layout_marginStart="12dp"-->
+<!--            android:layout_marginEnd="12dp">-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/tulisan_reputasi"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="12dp"-->
+<!--                android:text="REPUTASI ANDA"-->
+<!--                android:textStyle="bold"-->
+<!--                android:textColor="@color/white"-->
+<!--                android:textSize="16sp"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toTopOf="parent" />-->
+
+<!--            <ProgressBar-->
+<!--                style="?android:attr/progressBarStyleHorizontal"-->
+<!--                android:layout_width="320dp"-->
+<!--                android:layout_height="15dp"-->
+<!--                android:layout_marginTop="20dp"-->
+<!--                android:max="100"-->
+<!--                android:minWidth="320dp"-->
+<!--                android:minHeight="15dp"-->
+<!--                android:progress="90"-->
+<!--                android:progressDrawable="@drawable/customprogressbar"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintHorizontal_bias="0.492"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toBottomOf="@id/tulisan_reputasi" />-->
 
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+<!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
 
         <TextView
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="22dp"
-            android:text="COVID Info Center"
+            android:text="COVID-19 Info Center"
             android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/reputasi"
-            android:paddingStart="12dp"/>
+            app:layout_constraintTop_toBottomOf="@+id/bukan"
+            android:layout_marginStart="32dp"/>
 
         <TextView
             android:id="@+id/tanggal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingStart="12dp"
-            android:text="Informasi Covid-19 per 23/9/2020"
+            android:layout_marginStart="32dp"
+            android:text="Informasi per 23/9/2020"
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -216,163 +274,32 @@
             app:layout_constraintHorizontal_bias="0.0"/>
 
         <LinearLayout
-            android:id="@+id/layoutnyaini"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:orientation="horizontal"
-            android:weightSum="2"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tanggal"
-            android:padding="8dp"
-            android:layout_marginTop="16dp">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@drawable/round_rect_dark"
-                android:layout_marginEnd="4dp">
-
-                <TextView
-                    android:id="@+id/jumlah_konfirmasi"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="---"
-                    android:textColor="@color/white"
-                    android:textStyle="bold"
-                    android:textSize="40sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.509"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.366" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:gravity="center"
-                    android:text="Jumlah kasus yang terkonfirmasi"
-                    android:textSize="18sp"
-                    android:textColor="@color/white"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/jumlah_konfirmasi" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:weightSum="2"
-                android:orientation="vertical"
-                android:layout_marginStart="4dp">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:background="@drawable/round_rect_theme"
-                    android:layout_weight="1"
-                    android:layout_marginBottom="4dp">
-
-                    <TextView
-                        android:id="@+id/jumlah_sembuh"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="---"
-                        android:textColor="@color/white"
-                        android:textSize="26sp"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.15" />
-
-                    <TextView
-                        android:layout_width="150dp"
-                        android:padding="2dp"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="Jumlah mantan penderita yang telah pulih"
-                        android:textColor="@color/white"
-                        android:textSize="12sp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/jumlah_sembuh" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:background="@drawable/round_rect_secondary"
-                    android:layout_weight="1"
-                    android:layout_marginTop="4dp">
-
-
-                    <TextView
-                        android:id="@+id/jumlah_kematian"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="---"
-                        android:textColor="@color/colorPrimary"
-                        android:textSize="26sp"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.15" />
-
-                    <TextView
-                        android:layout_width="150dp"
-                        android:padding="2dp"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="Jumlah kematian yang tercatat"
-                        android:textColor="@color/colorPrimary"
-                        android:textSize="12sp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/jumlah_kematian" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <LinearLayout
             android:id="@+id/bukan"
             android:layout_width="match_parent"
-            android:layout_height="120dp"
+            android:layout_height="84dp"
             android:orientation="horizontal"
-            android:weightSum="2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/layoutnyaini"
-            android:padding="8dp">
+            app:layout_constraintTop_toBottomOf="@id/btn_realtime"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/round_rect_red"
+                android:background="@drawable/secondary_background"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/layoutnyaini">
+                app:layout_constraintStart_toStartOf="parent">
 
                 <TextView
-                    android:layout_width="150dp"
+                    android:layout_width="180dp"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="BANTU KAMI MEMERANGI COVID-19"
+                    android:text="BANTU KAMI MENEKAN PENULARAN COVID-19"
                     android:textColor="@color/white"
-                    android:textSize="18sp"
+                    android:textSize="12sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -382,21 +309,202 @@
 
                 <Button
                     android:id="@+id/btnLapor"
-                    android:layout_width="150dp"
-                    android:layout_height="70dp"
-                    android:background="@drawable/round_rect_reddark"
+                    android:layout_width="120dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/round_rect_lightblue"
                     android:text="laporkan"
-                    android:textColor="@color/white"
-                    android:textStyle="bold"
+                    android:textColor="@color/black"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.861"
+                    app:layout_constraintHorizontal_bias="0.889"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.57" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_totalkasus"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            app:layout_constraintTop_toBottomOf="@id/tanggal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:background="@drawable/secondary_backgroundv2"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginTop="8dp" >
+
+            <ImageView
+                android:id="@+id/gambar_batuk"
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/round_rect_oren"
+                app:layout_constraintTop_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:tint="@color/white" />
+
+            <ImageView
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:src="@drawable/batuk"
+                app:layout_constraintEnd_toEndOf="@+id/gambar_batuk"
+                app:layout_constraintTop_toTopOf="@id/gambar_batuk"
+                app:layout_constraintStart_toStartOf="@id/gambar_batuk"
+                app:layout_constraintBottom_toBottomOf="@id/gambar_batuk"/>
+
+            <TextView
+                android:id="@+id/total_kasus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:layout_marginStart="128dp"
+                android:text="Total Kasus"
+                android:textColor="@color/white"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintHorizontal_bias="0.498"
+                app:layout_constraintStart_toStartOf="@id/gambar_batuk"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/jumlah_konfirmasi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="-----"
+                android:layout_marginStart="128dp"
+                android:textColor="@color/white"
+                android:textSize="42sp"
+                android:textStyle="bold"
+                app:layout_constraintHorizontal_bias="0.585"
+                app:layout_constraintStart_toStartOf="@id/gambar_batuk"
+                app:layout_constraintTop_toTopOf="@id/total_kasus" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_totalkematian"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            app:layout_constraintTop_toBottomOf="@id/layout_totalkasus"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:background="@drawable/secondary_backgroundv2"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginTop="24dp" >
+
+            <ImageView
+                android:id="@+id/gambar_ambulan"
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/round_rect_red"
+                app:layout_constraintTop_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:tint="@color/white" />
+
+            <ImageView
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:src="@drawable/ambulan"
+                app:layout_constraintEnd_toEndOf="@+id/gambar_ambulan"
+                app:layout_constraintTop_toTopOf="@id/gambar_ambulan"
+                app:layout_constraintStart_toStartOf="@id/gambar_ambulan"
+                app:layout_constraintBottom_toBottomOf="@id/gambar_ambulan"/>
+
+            <TextView
+                android:id="@+id/total_kematian"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:layout_marginStart="128dp"
+                android:text="Total Kematian"
+                android:textColor="@color/white"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintHorizontal_bias="0.498"
+                app:layout_constraintStart_toStartOf="@id/gambar_ambulan"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/jumlah_kematian"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="-----"
+                android:layout_marginStart="128dp"
+                android:textColor="@color/white"
+                android:textSize="42sp"
+                android:textStyle="bold"
+                app:layout_constraintHorizontal_bias="0.585"
+                app:layout_constraintStart_toStartOf="@id/gambar_ambulan"
+                app:layout_constraintTop_toTopOf="@id/total_kematian" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_totalsembuh"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            app:layout_constraintTop_toBottomOf="@id/layout_totalkematian"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:background="@drawable/secondary_backgroundv2"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginTop="24dp" >
+
+            <ImageView
+                android:id="@+id/gambar_sembuh"
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/round_rect_hijau"
+                app:layout_constraintTop_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:tint="@color/white" />
+
+            <ImageView
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:src="@drawable/sehat"
+                app:layout_constraintEnd_toEndOf="@+id/gambar_sembuh"
+                app:layout_constraintTop_toTopOf="@id/gambar_sembuh"
+                app:layout_constraintStart_toStartOf="@id/gambar_sembuh"
+                app:layout_constraintBottom_toBottomOf="@id/gambar_sembuh"/>
+
+            <TextView
+                android:id="@+id/total_sembuh"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:layout_marginStart="128dp"
+                android:text="Total Sembuh"
+                android:textColor="@color/white"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintHorizontal_bias="0.498"
+                app:layout_constraintStart_toStartOf="@id/gambar_sembuh"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/jumlah_sembuh"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="-----"
+                android:layout_marginStart="128dp"
+                android:textColor="@color/white"
+                android:textSize="42sp"
+                android:textStyle="bold"
+                app:layout_constraintHorizontal_bias="0.585"
+                app:layout_constraintStart_toStartOf="@id/gambar_sembuh"
+                app:layout_constraintTop_toTopOf="@id/total_sembuh" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

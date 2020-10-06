@@ -14,7 +14,7 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/round_rect_dark">
+        android:background="@drawable/background_mainpage">
         <fragment
             android:id="@+id/place_autocomplete"
             android:layout_width="match_parent"
