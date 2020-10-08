@@ -6,12 +6,13 @@
             <solid android:color="@color/white" />
         </shape>
     </item>
-    <item android:bottom="100dp">
+    <item android:bottom="180dp">
         <shape
             android:shape="rectangle">
             <gradient
                 android:startColor="@color/secondaryAtasTengah"
-                android:endColor="@color/secondaryBawahTengah"/>
+                android:endColor="@color/secondaryBawahTengah"
+                android:angle="270"/>
             <corners
                 android:bottomLeftRadius="25dp"
                 android:bottomRightRadius="25dp"/>
