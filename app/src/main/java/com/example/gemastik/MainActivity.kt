@@ -1,7 +1,5 @@
 package com.example.gemastik
 
-// ini Activity yang nge handle 3 fragment, team, history dan scoreboard
-
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar

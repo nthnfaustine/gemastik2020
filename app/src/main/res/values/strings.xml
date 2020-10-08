@@ -4,4 +4,8 @@
     <string name="pemerintah">pemerintah</string>
     <string name="prediksi">prediksi</string>
     <string name="realtime">realtime</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="login">Login</string>
+    <string name="sign_in">Sign In</string>
+    <string name="crowdmap">CROWDMAP</string>
 </resources>

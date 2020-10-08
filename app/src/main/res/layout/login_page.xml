@@ -2,16 +2,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/primary_background">
+    android:background="@drawable/primary_background"
+    android:layout_gravity="center"
+    android:gravity="center">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="520dp"
         android:background="@drawable/round_rect_putih"
         android:layout_marginStart="40dp"
         android:layout_marginEnd="40dp"
-        android:layout_marginTop="128dp"
-        android:layout_marginBottom="120dp"
         android:elevation="132dp"
         android:orientation="vertical"
         android:weightSum="10">
@@ -35,7 +35,7 @@
                 android:layout_gravity="center"
                 android:layout_marginStart="12dp"
                 android:fontFamily="@font/poppins_medium"
-                android:text="CROWDMAP"
+                android:text="@string/crowdmap"
                 android:textColor="@color/black"
                 android:textSize="20sp" />
 
@@ -48,67 +48,77 @@
             android:layout_marginTop="24dp"
             android:layout_weight="1"
             android:fontFamily="@font/poppins_medium"
-            android:text="Sign In"
+            android:text="@string/sign_in"
             android:textColor="@color/black"
             android:textSize="32sp" />
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_email"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_gravity="center"
             android:layout_weight="1"
             android:layout_marginTop="8dp"
             android:background="@drawable/round_rect_putih"
-            android:drawableLeft="@drawable/ic_person"
+            android:drawableStart="@drawable/ic_person"
             android:elevation="20dp"
             android:fontFamily="@font/poppins_medium"
             android:padding="8dp"
-            android:text="Enter Username"
+            android:textSize="14sp"
+            android:hint="Enter Username"
             android:layout_marginStart="32dp"
-            android:layout_marginEnd="32dp" />
+            android:layout_marginEnd="32dp"
+            android:inputType="textEmailAddress"/>
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_password"
+            android:inputType="textPassword"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_gravity="center"
             android:layout_marginTop="20dp"
             android:layout_weight="1"
             android:background="@drawable/round_rect_putih"
-            android:drawableLeft="@drawable/lock"
+            android:drawableStart="@drawable/lock"
             android:elevation="20dp"
             android:fontFamily="@font/poppins_medium"
             android:padding="8dp"
-            android:text="Enter Password"
+            android:textSize="14sp"
+            android:hint="Enter Password"
             android:layout_marginStart="32dp"
             android:layout_marginEnd="32dp"/>
 
         <Button
+            android:id="@+id/btn_login"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="35dp"
             android:layout_gravity="center"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="50dp"
             android:layout_weight="1"
             android:background="@drawable/primary_background_roundv2"
             android:fontFamily="@font/poppins_medium"
-            android:text="Login"
+            android:text="@string/login"
             android:textColor="@color/white"
             android:textSize="22sp"
             android:layout_marginStart="64dp"
-            android:layout_marginEnd="64dp"/>
+            android:layout_marginEnd="64dp"
+            android:onClick="btnLogin"/>
 
         <Button
+            android:id="@+id/btn_register"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="35dp"
             android:layout_gravity="center"
             android:layout_marginTop="12dp"
             android:layout_weight="1"
             android:background="@drawable/primary_background_roundv2"
             android:fontFamily="@font/poppins_medium"
-            android:text="Sign Up"
+            android:text="@string/sign_up"
             android:textColor="@color/white"
             android:textSize="22sp"
             android:layout_marginStart="64dp"
-            android:layout_marginEnd="64dp"/>
+            android:layout_marginEnd="64dp"
+            android:onClick="btnRegister"/>
 
 
 
