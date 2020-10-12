@@ -127,7 +127,7 @@ class MapFragment: Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListen
     companion object{
 //        var TAG = MapFragment::class.java.simpleName
         private const val ARG_POSITION: String = "position"
-        private const val LOCATION_PERMISSION_REQUEST_CODE = 1
+        const val LOCATION_PERMISSION_REQUEST_CODE = 1
         private const val REQUEST_CHECK_SETTINGS = 2
         private const val PLACE_PICKER_REQUEST = 3
         private const val AUTOCOMPLETE_REQUEST_CODE = 4

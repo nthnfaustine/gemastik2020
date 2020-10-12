@@ -7,14 +7,22 @@ import android.view.View
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import br.com.simplepass.loadingbutton.customViews.CircularProgressButton
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 
 
 class LoginActivity: AppCompatActivity() {
 
     private var mAuth: FirebaseAuth? = null
+    private var database = FirebaseDatabase.getInstance()
+    private var myRef = database.reference
+
     private var etEmail: EditText? = null
     private var etPassword: EditText? = null
+
+    private lateinit var btnRegisterCircular: CircularProgressButton
+    private lateinit var btnLoginCircular: CircularProgressButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,6 +30,8 @@ class LoginActivity: AppCompatActivity() {
 
         mAuth = FirebaseAuth.getInstance()
         initEt()
+        btnRegisterCircular = findViewById(R.id.btn_register)
+        btnLoginCircular = findViewById(R.id.btn_login)
     }
 
     override fun onStart() {
@@ -40,6 +50,7 @@ class LoginActivity: AppCompatActivity() {
 
     fun btnLogin(view: View) {
         if (etEmail!!.text.isNotBlank() && etPassword!!.text.isNotBlank()){
+            btnLoginCircular.startAnimation()
             loginFirebase(etEmail!!.text.toString(), etPassword!!.text.toString())
         }else{
             Toast.makeText(this, "Tolong lengkapi email dan password", Toast.LENGTH_SHORT).show()
@@ -48,7 +59,7 @@ class LoginActivity: AppCompatActivity() {
 
     fun btnRegister(view: View) {
         if(etEmail!!.text.isNotBlank() && etPassword!!.text.isNotBlank()){
-//            btn.startAnimation()
+            btnRegisterCircular.startAnimation()
             registerFirebase(etEmail!!.text.toString(), etPassword!!.text.toString())
         }else{
             Toast.makeText(this, "Tolong lengkapi email dan password", Toast.LENGTH_SHORT).show()
@@ -71,7 +82,7 @@ class LoginActivity: AppCompatActivity() {
                     loadMainActivity()
                 } else {
                     Toast.makeText(this, "Login gagal", Toast.LENGTH_SHORT).show()
-//                    btn.revertAnimation()
+                    btnLoginCircular.revertAnimation()
                 }
             }
     }
@@ -81,11 +92,22 @@ class LoginActivity: AppCompatActivity() {
         mAuth!!.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    loadMainActivity()
+                    val currentUser = mAuth!!.currentUser
+                    myRef.child("Users").child(currentUser!!.uid).child("nama").setValue("Nama Anda")
+                        .addOnSuccessListener {
+                            loadMainActivity()
+                        }
                 } else {
                     Toast.makeText(applicationContext, "Register gagal", Toast.LENGTH_LONG).show()
-//                    btn.revertAnimation()
+                    btnRegisterCircular.revertAnimation()
                 }
             }
+    }
+
+    override fun onDestroy() {
+        btnLoginCircular.dispose()
+        btnRegisterCircular.dispose()
+
+        super.onDestroy()
     }
 }

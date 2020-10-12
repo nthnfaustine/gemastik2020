@@ -42,20 +42,21 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:checked="true"
-            android:background="@drawable/rb_pemerintah_sheet"
+            android:background="@drawable/secondary_background"
             android:layout_marginEnd="12dp"
-            android:text="@string/pemerintah"
+            android:text="Peta Sebaran"
             android:textSize="14sp"
-            android:textColor="@color/tulisan_sheet"
+            android:textColor="@color/white"
             android:button="@null"
             android:gravity="center"
             android:drawableTop="@drawable/ic_pemerintah"
             android:paddingTop="10dp"
-            android:drawableTint="@color/tulisan_sheet"
-            android:textStyle="bold"
+            android:drawableTint="@color/white"
+            android:fontFamily="@font/montserrat"
             tools:ignore="UnusedAttribute" />
 
         <RadioButton
+            android:fontFamily="@font/montserrat"
             android:id="@+id/rb_realtime"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -68,14 +69,14 @@
             android:drawableTop="@drawable/realtime"
             android:drawableTint="@color/tulisan_sheet"
             android:layout_gravity="center"
-            android:text="@string/realtime"
+            android:text="Crowd Heatmap"
             android:textSize="14sp"
             android:textColor="@color/tulisan_sheet"
             android:gravity="center"
-            android:textStyle="bold"
             tools:ignore="UnusedAttribute" />
 
         <RadioButton
+            android:fontFamily="@font/montserrat"
             android:id="@+id/rb_prediksi"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -86,11 +87,10 @@
             android:drawableTop="@drawable/prediction"
             android:paddingTop="10dp"
             android:drawableTint="@color/tulisan_sheet"
-            android:text="@string/prediksi"
+            android:text="Prediksi"
             android:gravity="center"
             android:textColor="@color/tulisan_sheet"
             android:textSize="14sp"
-            android:textStyle="bold"
             tools:ignore="UnusedAttribute" />
 
     </LinearLayout>
@@ -105,7 +105,8 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/buttonnya" />
+        app:layout_constraintTop_toBottomOf="@id/buttonnya"
+        android:fontFamily="@font/montserrat"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -122,6 +123,7 @@
             android:layout_weight="1">
 
             <TextView
+                android:id="@+id/tv1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -130,8 +132,21 @@
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:fontFamily="@font/montserrat"/>
 
+            <EditText
+                android:layout_width="120dp"
+                android:layout_height="25dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv1"
+                android:background="@drawable/round_rect_putih"
+                android:layout_marginTop="10dp"
+                android:text="03 - 10 - 2020"
+                android:textSize="12sp"
+                android:gravity="center"
+                android:fontFamily="@font/montserrat"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -141,6 +156,7 @@
             android:layout_weight="1">
 
             <TextView
+                android:id="@+id/tv2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -149,7 +165,21 @@
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:fontFamily="@font/montserrat"/>
+
+            <EditText
+                android:layout_width="120dp"
+                android:layout_height="25dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv2"
+                android:background="@drawable/round_rect_putih"
+                android:layout_marginTop="10dp"
+                android:text="15:00"
+                android:textSize="12sp"
+                android:gravity="center"
+                android:fontFamily="@font/montserrat"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
