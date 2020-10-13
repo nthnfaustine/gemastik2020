@@ -5,6 +5,8 @@ package com.example.gemastik
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Activity.RESULT_OK
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.content.Intent
 import android.content.IntentSender
 import android.content.pm.PackageManager
@@ -18,6 +20,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RadioButton
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
@@ -39,6 +42,9 @@ import kotlinx.android.synthetic.main.bottomsheet.view.*
 import org.json.JSONArray
 import java.io.IOException
 import com.google.maps.android.heatmaps.WeightedLatLng
+import org.json.JSONObject
+import java.util.*
+import kotlin.collections.ArrayList
 
 @Suppress("DEPRECATION")
 class MapFragment: Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
@@ -55,8 +61,19 @@ class MapFragment: Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListen
     private var rbPemerintah: RadioButton? = null
     private var rbRealtime: RadioButton? = null
     private var rbPrediksi: RadioButton? = null
-    private var circleJakarta: Circle? = null
+
+    private var circleJaksel: Circle? = null
+    private var circleJakbar: Circle? = null
+    private var circleJakut: Circle? = null
+    private var circleJaktim: Circle? = null
+    private var circleDepok: Circle? = null
+    private var circleBekasi: Circle? = null
+    private var circleCirebon: Circle? = null
+    private var circleBogor: Circle? = null
+    private var circleCilegon: Circle? = null
+    private var circleTangsel: Circle? = null
     private var circleTangerang:Circle? = null
+
     private var heatmapOverlay: TileOverlay? = null
     private var stateMap: Int = 1
 
@@ -66,61 +83,14 @@ class MapFragment: Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListen
         rootView = inflater.inflate(R.layout.activity_maps, container, false)
         setHasOptionsMenu(true)
 
-        val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
-        mapFragment.getMapAsync(this)
-
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(activity!!.applicationContext)
-
-        locationCallback = object : LocationCallback() {
-            override fun onLocationResult(p0: LocationResult) {
-                super.onLocationResult(p0)
-
-                lastLocation = p0.lastLocation
-                // TODO: 09/09/20 last locationnya DISINI YA 
-//                placeMarkerOnMap(LatLng(lastLocation.latitude, lastLocation.longitude))
-            }
-        }
-
+        inisialisasiLokasi()
         createLocationRequest()
-
-        bottomSheetBehavior = BottomSheetBehavior.from(rootView.bottomSheet)
-
-        bottomSheetBehavior.addBottomSheetCallback(object :
-            BottomSheetBehavior.BottomSheetCallback() {
-
-            override fun onSlide(bottomSheet: View, slideOffset: Float) {
-                // handle onSlide
-            }
-
-            override fun onStateChanged(bottomSheet: View, newState: Int) {
-//                when (newState) {
-////                    BottomSheetBehavior.STATE_COLLAPSED -> Toast.makeText(activity, "STATE_COLLAPSED", Toast.LENGTH_SHORT).show()
-////                    BottomSheetBehavior.STATE_EXPANDED -> Toast.makeText(activity, "STATE_EXPANDED", Toast.LENGTH_SHORT).show()
-////                    BottomSheetBehavior.STATE_DRAGGING -> Toast.makeText(activity, "STATE_DRAGGING", Toast.LENGTH_SHORT).show()
-////                    BottomSheetBehavior.STATE_SETTLING -> Toast.makeText(activity, "STATE_SETTLING", Toast.LENGTH_SHORT).show()
-////                    BottomSheetBehavior.STATE_HIDDEN -> Toast.makeText(activity, "STATE_HIDDEN", Toast.LENGTH_SHORT).show()
-////                    else -> Toast.makeText(activity, "OTHER_STATE", Toast.LENGTH_SHORT).show()
-//                }
-            }
-        })
-
-        Places.initialize(context!!, getString(R.string.google_maps_key))
-
-        val fields = listOf(Place.Field.ID, Place.Field.NAME)
-
-        autocompleteFragment = childFragmentManager.findFragmentById(R.id.place_autocomplete) as AutocompleteSupportFragment
-        autocompleteFragment!!.setPlaceFields(fields)
-
-        autocompleteFragment!!.setOnPlaceSelectedListener(object:com.google.android.libraries.places.widget.listener.PlaceSelectionListener {
-            override fun onPlaceSelected(place: Place) {
-                Log.d("Maps", "Place selected: " + place.name)
-            }
-            override fun onError(p0: Status) {
-                Log.d("Maps", "An error occurred:")
-            }
-        })
-
+        inisialisasiBS()
+        inisialisasiAutoComplete()
         initializeRb()
+        inisialisasiDatePicker()
+
+
         return rootView
     }
 
@@ -129,8 +99,8 @@ class MapFragment: Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListen
         private const val ARG_POSITION: String = "position"
         const val LOCATION_PERMISSION_REQUEST_CODE = 1
         private const val REQUEST_CHECK_SETTINGS = 2
-        private const val PLACE_PICKER_REQUEST = 3
-        private const val AUTOCOMPLETE_REQUEST_CODE = 4
+//        private const val PLACE_PICKER_REQUEST = 3
+//        private const val AUTOCOMPLETE_REQUEST_CODE = 4
         fun newInstance(): MapFragment{
             val fragment = MapFragment()
             val args = Bundle()
@@ -328,9 +298,18 @@ class MapFragment: Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListen
             rbRealtime!!.isChecked = true
             rbPrediksi!!.isChecked = false
 
-            if(stateMap != 2){
-                circleJakarta!!.remove()
+            if(stateMap != 2 && stateMap != 3){
                 circleTangerang!!.remove()
+                circleTangsel!!.remove()
+                circleJakut!!.remove()
+                circleJakbar!!.remove()
+                circleJaksel!!.remove()
+                circleJaktim!!.remove()
+                circleBogor!!.remove()
+                circleCilegon!!.remove()
+                circleCirebon!!.remove()
+                circleBekasi!!.remove()
+                circleDepok!!.remove()
                 modeHeatmap()
                 stateMap = 2
             }
@@ -341,9 +320,18 @@ class MapFragment: Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListen
             rbRealtime!!.isChecked = false
             rbPrediksi!!.isChecked = true
 
-            if(stateMap != 3){
-                circleJakarta!!.remove()
+            if(stateMap != 3 && stateMap != 2){
                 circleTangerang!!.remove()
+                circleTangsel!!.remove()
+                circleJakut!!.remove()
+                circleJakbar!!.remove()
+                circleJaksel!!.remove()
+                circleJaktim!!.remove()
+                circleBogor!!.remove()
+                circleCilegon!!.remove()
+                circleCirebon!!.remove()
+                circleBekasi!!.remove()
+                circleDepok!!.remove()
                 modePrediksi()
                 stateMap = 3
             }
@@ -351,8 +339,7 @@ class MapFragment: Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListen
     }
 
     private fun modePemerintah(){
-        buatCircleJakarta()
-        buatCircleTangerang()
+        buatCircle()
     }
 
     private fun modeHeatmap(){
@@ -371,24 +358,53 @@ class MapFragment: Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListen
         modeHeatmap()
     }
 
-    private fun buatCircleJakarta(){
-        val circleOptions = CircleOptions()
-            .center(LatLng(-6.2088, 106.8456))
-            .radius(10000.0)
-            .fillColor(Color.argb(128, 255, 0, 0))
-            .strokeWidth(0.0F)
-        circleJakarta = map.addCircle(circleOptions)
+    private fun buatCircle(){
+        val datanya = generateCircleData()
+
+        for (i in 0 until datanya.size){
+            val namaTempat = datanya[i].getString("namaTempat")
+            val lat = datanya[i].getDouble("latitude")
+            val lon = datanya[i].getDouble("longitude")
+            val luas = datanya[i].getDouble("luas") * 2
+
+            val circleOptions = CircleOptions()
+                .center(LatLng(lat, lon))
+                .radius(luas)
+                .fillColor(Color.argb(128, 255, 0, 0))
+                .strokeWidth(0.0F)
+
+            when (namaTempat){
+                "jakarta utara" -> circleJakut = map.addCircle(circleOptions)
+                "jakarta selatan" -> circleJaksel = map.addCircle(circleOptions)
+                "jakarta barat" -> circleJakbar = map.addCircle(circleOptions)
+                "jakarta timur" -> circleJaktim = map.addCircle(circleOptions)
+                "depok" -> circleDepok = map.addCircle(circleOptions)
+                "bekasi" -> circleBekasi = map.addCircle(circleOptions)
+                "cirebon" -> circleCirebon = map.addCircle(circleOptions)
+                "bogor" -> circleBogor = map.addCircle(circleOptions)
+                "cilegon" -> circleCilegon = map.addCircle(circleOptions)
+                "tangerang" -> circleTangerang = map.addCircle(circleOptions)
+                "tangsel" -> circleTangsel = map.addCircle(circleOptions)
+            }
+        }
     }
 
-    private fun buatCircleTangerang(){
-        val circleOptions = CircleOptions()
-            .center(LatLng(-6.1702, 106.6403))
-            .radius(10000.0)
-            .fillColor(Color.argb(128, 255, 255, 0))
-            .strokeWidth(0.0F)
-        circleTangerang = map.addCircle(circleOptions)
+    // return data dari json dataset
+    private fun generateCircleData(): ArrayList<JSONObject>{
+        val data = ArrayList<JSONObject>()
+
+        val jsonData = getJsonDataFromAsset("datasetPetaSebaran.json")
+        jsonData?.let {
+            for (i in 0 until it.length()) {
+                val entry = it.getJSONObject(i)
+
+                data.add(entry)
+            }
+        }
+        return data
     }
 
+    //return data dari json dataset
     private fun generateHeatMapData(): ArrayList<WeightedLatLng> {
         val data = ArrayList<WeightedLatLng>()
 
@@ -409,6 +425,7 @@ class MapFragment: Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListen
         return data
     }
 
+    //ini fungsi buat load .json dari folder asset
     private fun getJsonDataFromAsset(fileName: String): JSONArray? {
         return try {
             val jsonString = context!!.assets.open(fileName).bufferedReader().use { it.readText() }
@@ -416,6 +433,97 @@ class MapFragment: Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListen
         } catch (e: Exception) {
             e.printStackTrace()
             null
+        }
+    }
+
+    //inisialisasi lokasi dari pengguna
+    private fun inisialisasiLokasi(){
+        val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
+        mapFragment.getMapAsync(this)
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(activity!!.applicationContext)
+
+        locationCallback = object : LocationCallback() {
+            override fun onLocationResult(p0: LocationResult) {
+                super.onLocationResult(p0)
+
+                lastLocation = p0.lastLocation
+                // TODO: 09/09/20 last locationnya DISINI YA
+//                placeMarkerOnMap(LatLng(lastLocation.latitude, lastLocation.longitude))
+            }
+        }
+    }
+
+    private fun inisialisasiBS(){
+        bottomSheetBehavior = BottomSheetBehavior.from(rootView.bottomSheet)
+
+        bottomSheetBehavior.addBottomSheetCallback(object :
+            BottomSheetBehavior.BottomSheetCallback() {
+
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+                // handle onSlide
+            }
+
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+//                when (newState) {
+////                    BottomSheetBehavior.STATE_COLLAPSED -> Toast.makeText(activity, "STATE_COLLAPSED", Toast.LENGTH_SHORT).show()
+////                    BottomSheetBehavior.STATE_EXPANDED -> Toast.makeText(activity, "STATE_EXPANDED", Toast.LENGTH_SHORT).show()
+////                    BottomSheetBehavior.STATE_DRAGGING -> Toast.makeText(activity, "STATE_DRAGGING", Toast.LENGTH_SHORT).show()
+////                    BottomSheetBehavior.STATE_SETTLING -> Toast.makeText(activity, "STATE_SETTLING", Toast.LENGTH_SHORT).show()
+////                    BottomSheetBehavior.STATE_HIDDEN -> Toast.makeText(activity, "STATE_HIDDEN", Toast.LENGTH_SHORT).show()
+////                    else -> Toast.makeText(activity, "OTHER_STATE", Toast.LENGTH_SHORT).show()
+//                }
+            }
+        })
+    }
+
+    private fun inisialisasiAutoComplete(){
+        Places.initialize(context!!, getString(R.string.google_maps_key))
+
+        val fields = listOf(Place.Field.ID, Place.Field.NAME)
+
+        autocompleteFragment = childFragmentManager.findFragmentById(R.id.place_autocomplete) as AutocompleteSupportFragment
+        autocompleteFragment!!.setPlaceFields(fields)
+
+        autocompleteFragment!!.setOnPlaceSelectedListener(object:com.google.android.libraries.places.widget.listener.PlaceSelectionListener {
+            override fun onPlaceSelected(place: Place) {
+                Log.d("Maps", "Place selected: " + place.name)
+            }
+            override fun onError(p0: Status) {
+                Log.d("Maps", "An error occurred:")
+            }
+        })
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun inisialisasiDatePicker(){
+        val tvDate:TextView = rootView.findViewById(R.id.tv_hari)
+        val tvJam:TextView = rootView.findViewById(R.id.tv_jam)
+
+        val c = Calendar.getInstance()
+        val yearr = c.get(Calendar.YEAR)
+        val month = c.get(Calendar.MONTH)
+        val day = c.get(Calendar.DATE)
+
+        val jam = c.get(Calendar.HOUR_OF_DAY)
+        val menit = c.get(Calendar.MINUTE)
+
+        tvJam.text = "$jam:$menit"
+        tvDate.text = "$day - $month - $yearr"
+
+        tvDate.setOnClickListener {
+            val dpd = DatePickerDialog(context!!, DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
+                // set tv nya ke yang dipilih
+                tvDate.text = "$dayOfMonth - $monthOfYear - $year"
+            }, yearr, month, day)
+            dpd.show()
+        }
+
+        tvJam.setOnClickListener {
+            val tpd = TimePickerDialog(context!!, TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
+                tvJam.text = "$hourOfDay:$minute"
+            }, jam, menit, true)
+            tpd.show()
         }
     }
     

@@ -1,0 +1,56 @@
+[{
+  "namaTempat": "jakarta utara",
+  "latitude": -6.1554,
+  "longitude": 106.8927,
+  "luas": 2934.0
+}, {
+  "namaTempat": "jakarta selatan",
+  "latitude": -6.2615,
+  "longitude": 106.8106,
+  "luas": 2826.0
+},  {
+  "namaTempat": "jakarta barat",
+  "latitude": -6.1674,
+  "longitude": 106.7637,
+  "luas": 2590.0
+},  {
+  "namaTempat": "jakarta timur",
+  "latitude": -6.2250,
+  "longitude": 106.9004,
+  "luas": 3760.0
+},  {
+  "namaTempat": "depok",
+  "latitude": -6.4025,
+  "longitude": 106.7942,
+  "luas": 4006.0
+},  {
+  "namaTempat": "bekasi",
+  "latitude": -6.2383,
+  "longitude": 106.9756,
+  "luas": 4210.0
+},  {
+  "namaTempat": "cirebon",
+  "latitude": -6.7320,
+  "longitude": 108.5523,
+  "luas": 747.2
+},  {
+  "namaTempat": "bogor",
+  "latitude": -6.5971,
+  "longitude": 106.8060,
+  "luas": 2370.0
+},  {
+  "namaTempat": "cilegon",
+  "latitude": -6.0187,
+  "longitude": 106.0558,
+  "luas": 3510.0
+},  {
+  "namaTempat": "tangerang",
+  "latitude": -6.1702,
+  "longitude": 106.6403,
+  "luas": 3078.0
+},  {
+  "namaTempat": "tangsel",
+  "latitude": -6.2835,
+  "longitude": 106.7113,
+  "luas": 2944.0
+}]

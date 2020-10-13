@@ -1,6 +1,6 @@
 <resources>
-    <string name="app_name">gemastik</string>
-    <string name="title_activity_maps">Map</string>
+    <string name="app_name">Crowdmap</string>
+    <string name="title_activity_maps">Crowdmap</string>
     <string name="pemerintah">pemerintah</string>
     <string name="prediksi">prediksi</string>
     <string name="realtime">realtime</string>

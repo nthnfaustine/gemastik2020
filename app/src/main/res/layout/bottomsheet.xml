@@ -46,12 +46,12 @@
             android:layout_marginEnd="12dp"
             android:text="Peta Sebaran"
             android:textSize="14sp"
-            android:textColor="@color/white"
+            android:textColor="@color/tulisan_sheet"
             android:button="@null"
             android:gravity="center"
             android:drawableTop="@drawable/ic_pemerintah"
             android:paddingTop="10dp"
-            android:drawableTint="@color/white"
+            android:drawableTint="@color/tulisan_sheet"
             android:fontFamily="@font/montserrat"
             tools:ignore="UnusedAttribute" />
 
@@ -135,7 +135,8 @@
                 app:layout_constraintTop_toTopOf="parent"
                 android:fontFamily="@font/montserrat"/>
 
-            <EditText
+            <TextView
+                android:id="@+id/tv_hari"
                 android:layout_width="120dp"
                 android:layout_height="25dp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -144,6 +145,7 @@
                 android:background="@drawable/round_rect_putih"
                 android:layout_marginTop="10dp"
                 android:text="03 - 10 - 2020"
+                android:textColor="@color/black"
                 android:textSize="12sp"
                 android:gravity="center"
                 android:fontFamily="@font/montserrat"/>
@@ -168,7 +170,8 @@
                 app:layout_constraintTop_toTopOf="parent"
                 android:fontFamily="@font/montserrat"/>
 
-            <EditText
+            <TextView
+                android:id="@+id/tv_jam"
                 android:layout_width="120dp"
                 android:layout_height="25dp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -177,6 +180,7 @@
                 android:background="@drawable/round_rect_putih"
                 android:layout_marginTop="10dp"
                 android:text="15:00"
+                android:textColor="@color/black"
                 android:textSize="12sp"
                 android:gravity="center"
                 android:fontFamily="@font/montserrat"/>

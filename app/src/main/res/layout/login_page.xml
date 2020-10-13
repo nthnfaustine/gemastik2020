@@ -93,10 +93,8 @@
         <br.com.simplepass.loadingbutton.customViews.CircularProgressButton
             android:id="@+id/btn_login"
             android:layout_width="match_parent"
-            android:layout_height="35dp"
-            android:layout_gravity="center"
+            android:layout_height="45dp"
             android:layout_marginTop="50dp"
-            android:layout_weight="1"
             android:background="@drawable/primary_background_roundv2"
             android:fontFamily="@font/poppins_medium"
             android:text="@string/login"
@@ -105,7 +103,10 @@
             android:layout_marginStart="64dp"
             android:layout_marginEnd="64dp"
             android:onClick="btnLogin"
-            app:spinning_bar_color="#fff"/>
+            app:spinning_bar_color="#fff"
+            app:spinning_bar_padding="6dp"
+            app:spinning_bar_width="4dp"
+            android:layout_gravity="center"/>
 
 <!--        <br.com.simplepass.loadingbutton.customViews.CircularProgressButton-->
 <!--            android:id="@+id/btnRegister"-->
@@ -127,10 +128,8 @@
         <br.com.simplepass.loadingbutton.customViews.CircularProgressButton
             android:id="@+id/btn_register"
             android:layout_width="match_parent"
-            android:layout_height="35dp"
-            android:layout_gravity="center"
+            android:layout_height="45dp"
             android:layout_marginTop="12dp"
-            android:layout_weight="1"
             android:background="@drawable/primary_background_roundv2"
             android:fontFamily="@font/poppins_medium"
             android:text="@string/sign_up"
@@ -139,7 +138,10 @@
             android:layout_marginStart="64dp"
             android:layout_marginEnd="64dp"
             android:onClick="btnRegister"
-            app:spinning_bar_color="#fff"/>
+            android:layout_gravity="center"
+            app:spinning_bar_color="#fff"
+            app:spinning_bar_padding="6dp"
+            app:spinning_bar_width="4dp"/>
 
 
 
