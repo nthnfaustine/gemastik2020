@@ -2,8 +2,10 @@ package com.example.gemastik
 
 import android.annotation.SuppressLint
 import android.app.Activity.RESULT_OK
+import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.location.Address
 import android.location.Geocoder
 import android.location.Location
@@ -30,6 +32,9 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.mlkit.vision.common.InputImage
+import com.google.mlkit.vision.objects.ObjectDetection
+import com.google.mlkit.vision.objects.defaults.ObjectDetectorOptions
 import kotlinx.android.synthetic.main.ganti_nama.view.*
 import kotlinx.android.synthetic.main.profile_fragment.view.*
 import org.json.JSONObject
@@ -65,6 +70,8 @@ class ProfileFragment: Fragment() {
         inisialisasiLokasi()
         inisialisasiTanggal()
 
+
+
         return rootView
     }
 
@@ -72,14 +79,15 @@ class ProfileFragment: Fragment() {
         buttonLapor = rootView.findViewById(R.id.btnLapor)
 
         buttonLapor!!.setOnClickListener {
-            dispatchTakeVideoIntent()
+            dispatchTakePictureIntent()
         }
     }
 
     companion object{
         var TAG = ProfileFragment::class.java.simpleName
         private const val ARG_POSITION: String = "position"
-        const val REQUEST_VIDEO_CAPTURE = 1
+//        const val REQUEST_VIDEO_CAPTURE = 1
+        const val REQUEST_IMAGE_CAPTURE = 2
         fun newInstance(): ProfileFragment{
             val fragment = ProfileFragment()
             val args = Bundle()
@@ -89,17 +97,62 @@ class ProfileFragment: Fragment() {
         }
     }
 
-    private fun dispatchTakeVideoIntent() {
-        Intent(MediaStore.ACTION_VIDEO_CAPTURE).also { takeVideoIntent ->
-            takeVideoIntent.resolveActivity(context!!.packageManager)?.also {
-                startActivityForResult(takeVideoIntent, REQUEST_VIDEO_CAPTURE)
+//    private fun dispatchTakeVideoIntent() {
+//        Intent(MediaStore.ACTION_VIDEO_CAPTURE).also { takeVideoIntent ->
+//            takeVideoIntent.resolveActivity(context!!.packageManager)?.also {
+//                startActivityForResult(takeVideoIntent, REQUEST_VIDEO_CAPTURE)
+//            }
+//        }
+//    }
+
+    private fun dispatchTakePictureIntent() {
+        val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        try {
+            val builder = AlertDialog.Builder(context!!)
+            builder.setTitle("Laporkan")
+            builder.setMessage("Tolong ambil gambar dari kerumunan orang")
+            builder.setPositiveButton("Ok"){_, _ ->
+                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
             }
+            builder.setNegativeButton("Cancel"){_, _ -> }
+
+        } catch (e: ActivityNotFoundException) {
+            // display error state to the user
         }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == REQUEST_VIDEO_CAPTURE && resultCode == RESULT_OK) {
-            Toast.makeText(context, "BERHASIL", Toast.LENGTH_SHORT).show()
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            val imageBitmap = data!!.extras!!.get("data") as Bitmap
+
+            // TODO: 15/10/20 ml nya
+
+            // Options
+            val options = ObjectDetectorOptions.Builder()
+                .setDetectorMode(ObjectDetectorOptions.SINGLE_IMAGE_MODE)
+                .enableClassification()
+                .enableMultipleObjects()
+                .build()
+
+            // Convert bitmap ke firebasevisionimage
+            val image = InputImage.fromBitmap(imageBitmap, 0)
+
+            // Detect mukanya
+            val detector = ObjectDetection.getClient(options)
+
+            detector.process(image)
+                .addOnSuccessListener { detectedObjects ->
+                    var personCounter = 0
+                    for (obj in detectedObjects) {
+                        personCounter += 1
+                        obj.boundingBox
+                    }
+                    Toast.makeText(context, "Person detected: $personCounter", Toast.LENGTH_SHORT).show()
+                    Log.d("HASIL", personCounter.toString())
+                }
+                .addOnFailureListener { e ->
+                    Log.d("Result ml", e.toString())
+                }
         }
     }
 
