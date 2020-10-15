@@ -11,8 +11,6 @@ import android.content.Intent
 import android.content.IntentSender
 import android.content.pm.PackageManager
 import android.graphics.Color
-import android.location.Address
-import android.location.Geocoder
 import android.location.Location
 import android.os.Bundle
 import android.util.Log
@@ -35,13 +33,14 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.api.net.PlacesClient
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.maps.android.heatmaps.HeatmapTileProvider
+import com.google.maps.android.heatmaps.WeightedLatLng
 import kotlinx.android.synthetic.main.bottomsheet.view.*
 import org.json.JSONArray
-import java.io.IOException
-import com.google.maps.android.heatmaps.WeightedLatLng
 import org.json.JSONObject
 import java.util.*
 import kotlin.collections.ArrayList
@@ -76,8 +75,6 @@ class MapFragment: Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListen
 
     private var heatmapOverlay: TileOverlay? = null
     private var stateMap: Int = 1
-
-    private var autocompleteFragment: AutocompleteSupportFragment? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?{
         rootView = inflater.inflate(R.layout.activity_maps, container, false)
@@ -157,34 +154,34 @@ class MapFragment: Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListen
         }
     }
 
-    private fun placeMarkerOnMap(location: LatLng) {
-        val markerOptions = MarkerOptions().position(location)
+//    private fun placeMarkerOnMap(location: LatLng) {
+//        val markerOptions = MarkerOptions().position(location)
+//
+//        val titleStr = getAddress(location)  // add these two lines
+//        markerOptions.title(titleStr)
+//
+//        map.addMarker(markerOptions)
+//    }
 
-        val titleStr = getAddress(location)  // add these two lines
-        markerOptions.title(titleStr)
-
-        map.addMarker(markerOptions)
-    }
-
-    private fun getAddress(latLng: LatLng): String {
-        val geocoder = Geocoder(activity as AppCompatActivity)
-        val addresses: List<Address>?
-        val address: Address?
-        var addressText = ""
-
-        try {
-            addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1)
-            if (null != addresses && addresses.isNotEmpty()) {
-                address = addresses[0]
-                for (i in 0 until address.maxAddressLineIndex) {
-                    addressText += if (i == 0) address.getAddressLine(i) else "\n" + address.getAddressLine(i)
-                }
-            }
-        } catch (e: IOException) {
-            Log.e("MapsActivity", e.localizedMessage!!)
-        }
-        return addressText
-    }
+//    private fun getAddress(latLng: LatLng): String {
+//        val geocoder = Geocoder(activity as AppCompatActivity)
+//        val addresses: List<Address>?
+//        val address: Address?
+//        var addressText = ""
+//
+//        try {
+//            addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1)
+//            if (null != addresses && addresses.isNotEmpty()) {
+//                address = addresses[0]
+//                for (i in 0 until address.maxAddressLineIndex) {
+//                    addressText += if (i == 0) address.getAddressLine(i) else "\n" + address.getAddressLine(i)
+//                }
+//            }
+//        } catch (e: IOException) {
+//            Log.e("MapsActivity", e.localizedMessage!!)
+//        }
+//        return addressText
+//    }
 
     private fun startLocationUpdates() {
         if (ActivityCompat.checkSelfPermission(rootView.context,
@@ -478,19 +475,26 @@ class MapFragment: Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListen
     }
 
     private fun inisialisasiAutoComplete(){
-        Places.initialize(context!!, getString(R.string.google_maps_key))
+        if (!Places.isInitialized()) {
+            Places.initialize(context!!, getString(R.string.google_maps_key))
+        }
 
-        val fields = listOf(Place.Field.ID, Place.Field.NAME)
+        val placesClient: PlacesClient =
+            Places.createClient(context!!)
 
-        autocompleteFragment = childFragmentManager.findFragmentById(R.id.place_autocomplete) as AutocompleteSupportFragment
-        autocompleteFragment!!.setPlaceFields(fields)
+        val autocompleteFragment = childFragmentManager.findFragmentById(R.id.place_autocomplete) as AutocompleteSupportFragment
 
-        autocompleteFragment!!.setOnPlaceSelectedListener(object:com.google.android.libraries.places.widget.listener.PlaceSelectionListener {
+        autocompleteFragment.setPlaceFields(listOf(Place.Field.ID, Place.Field.NAME))
+
+        autocompleteFragment.setOnPlaceSelectedListener(object : PlaceSelectionListener {
             override fun onPlaceSelected(place: Place) {
-                Log.d("Maps", "Place selected: " + place.name)
+                // TODO: Get info about the selected place.
+                Log.i("TEMPAT", "Place: ${place.name}, ${place.id}")
             }
-            override fun onError(p0: Status) {
-                Log.d("Maps", "An error occurred:")
+
+            override fun onError(status: Status) {
+                // TODO: Handle the error.
+                Log.i("TEMPAT", "An error occurred: $status")
             }
         })
     }

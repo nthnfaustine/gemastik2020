@@ -115,6 +115,7 @@ class ProfileFragment: Fragment() {
                 startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
             }
             builder.setNegativeButton("Cancel"){_, _ -> }
+            builder.show()
 
         } catch (e: ActivityNotFoundException) {
             // display error state to the user
