@@ -6,9 +6,6 @@
     <color name="white">#FFFFFF</color>
     <color name="transparent">#00000000</color>
     <color name="gray">#444444</color>
-    <color name="lgray">#777777</color>
-    <color name="red">#b22222</color>
-    <color name="darkred">#e95c48</color>
 
     <color name="primaryPojokKiri">#B585FB</color>
     <color name="primaryPojokKanan">#E9A6A6</color>
@@ -17,5 +14,4 @@
     <color name="hijau">#56A652</color>
     <color name="secondaryAtasTengah">#B484FA</color>
     <color name="secondaryBawahTengah">#640AE9</color>
-    <color name="biruFont">#640AE9</color>
 </resources>

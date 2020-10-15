@@ -337,11 +337,13 @@
             <ImageView
                 android:layout_width="75dp"
                 android:layout_height="75dp"
-                android:src="@drawable/batuk"
+                android:src="@drawable/ic_cough"
                 app:layout_constraintEnd_toEndOf="@+id/gambar_batuk"
                 app:layout_constraintTop_toTopOf="@id/gambar_batuk"
                 app:layout_constraintStart_toStartOf="@id/gambar_batuk"
-                app:layout_constraintBottom_toBottomOf="@id/gambar_batuk"/>
+                app:layout_constraintBottom_toBottomOf="@id/gambar_batuk"
+                app:tint="@color/white"
+                android:rotationY="180"/>
 
             <TextView
                 android:id="@+id/total_kasus"
@@ -397,11 +399,12 @@
             <ImageView
                 android:layout_width="75dp"
                 android:layout_height="75dp"
-                android:src="@drawable/ambulan"
+                android:src="@drawable/ic_ambulance"
                 app:layout_constraintEnd_toEndOf="@+id/gambar_ambulan"
                 app:layout_constraintTop_toTopOf="@id/gambar_ambulan"
                 app:layout_constraintStart_toStartOf="@id/gambar_ambulan"
-                app:layout_constraintBottom_toBottomOf="@id/gambar_ambulan"/>
+                app:layout_constraintBottom_toBottomOf="@id/gambar_ambulan"
+                app:tint="@color/white" />
 
             <TextView
                 android:id="@+id/total_kematian"
@@ -457,11 +460,12 @@
             <ImageView
                 android:layout_width="75dp"
                 android:layout_height="75dp"
-                android:src="@drawable/sehat"
+                android:src="@drawable/ic_user"
                 app:layout_constraintEnd_toEndOf="@+id/gambar_sembuh"
                 app:layout_constraintTop_toTopOf="@id/gambar_sembuh"
                 app:layout_constraintStart_toStartOf="@id/gambar_sembuh"
-                app:layout_constraintBottom_toBottomOf="@id/gambar_sembuh"/>
+                app:layout_constraintBottom_toBottomOf="@id/gambar_sembuh"
+                app:tint="@color/white" />
 
             <TextView
                 android:id="@+id/total_sembuh"
