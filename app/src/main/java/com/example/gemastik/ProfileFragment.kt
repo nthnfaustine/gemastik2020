@@ -112,7 +112,9 @@ class ProfileFragment: Fragment() {
             builder.setTitle("Laporkan")
             builder.setMessage("Tolong ambil gambar dari kerumunan orang")
             builder.setPositiveButton("Ok"){_, _ ->
-                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
+                val intent = Intent(context, DetectorActivity::class.java)
+                startActivity(intent)
+//                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
             }
             builder.setNegativeButton("Cancel"){_, _ -> }
             builder.show()

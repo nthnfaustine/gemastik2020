@@ -1,2 +1,3 @@
+include ':lib_interpreter'
 include ':app'
 rootProject.name = "gemastik"
