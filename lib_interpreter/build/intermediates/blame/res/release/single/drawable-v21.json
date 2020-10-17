@@ -1,0 +1,26 @@
+[
+    {
+        "merged": "/home/nathan/AndroidStudioProjects/gemastik/lib_interpreter/build/intermediates/res/merged/release/drawable-v21/notification_action_background.xml",
+        "source": "/home/nathan/.gradle/caches/transforms-2/files-2.1/dbf21018a602b876b181f86b79c57314/core-1.1.0/res/drawable-v21/notification_action_background.xml"
+    },
+    {
+        "merged": "/home/nathan/AndroidStudioProjects/gemastik/lib_interpreter/build/intermediates/res/merged/release/drawable-v21/abc_edit_text_material.xml",
+        "source": "/home/nathan/.gradle/caches/transforms-2/files-2.1/6c6d3664ea455c5a07371d2cc6bcf7d7/appcompat-1.1.0/res/drawable-v21/abc_edit_text_material.xml"
+    },
+    {
+        "merged": "/home/nathan/AndroidStudioProjects/gemastik/lib_interpreter/build/intermediates/res/merged/release/drawable-v21/abc_dialog_material_background.xml",
+        "source": "/home/nathan/.gradle/caches/transforms-2/files-2.1/6c6d3664ea455c5a07371d2cc6bcf7d7/appcompat-1.1.0/res/drawable-v21/abc_dialog_material_background.xml"
+    },
+    {
+        "merged": "/home/nathan/AndroidStudioProjects/gemastik/lib_interpreter/build/intermediates/res/merged/release/drawable-v21/abc_btn_colored_material.xml",
+        "source": "/home/nathan/.gradle/caches/transforms-2/files-2.1/6c6d3664ea455c5a07371d2cc6bcf7d7/appcompat-1.1.0/res/drawable-v21/abc_btn_colored_material.xml"
+    },
+    {
+        "merged": "/home/nathan/AndroidStudioProjects/gemastik/lib_interpreter/build/intermediates/res/merged/release/drawable-v21/abc_list_divider_material.xml",
+        "source": "/home/nathan/.gradle/caches/transforms-2/files-2.1/6c6d3664ea455c5a07371d2cc6bcf7d7/appcompat-1.1.0/res/drawable-v21/abc_list_divider_material.xml"
+    },
+    {
+        "merged": "/home/nathan/AndroidStudioProjects/gemastik/lib_interpreter/build/intermediates/res/merged/release/drawable-v21/abc_action_bar_item_background_material.xml",
+        "source": "/home/nathan/.gradle/caches/transforms-2/files-2.1/6c6d3664ea455c5a07371d2cc6bcf7d7/appcompat-1.1.0/res/drawable-v21/abc_action_bar_item_background_material.xml"
+    }
+]

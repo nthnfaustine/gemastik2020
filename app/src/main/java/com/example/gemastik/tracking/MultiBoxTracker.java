@@ -192,9 +192,9 @@ public class MultiBoxTracker {
 
     for (final Pair<Float, Recognition> potential : rectsToTrack) {
       final TrackedRecognition trackedRecognition = new TrackedRecognition();
-      trackedRecognition.detectionConfidence = potential.first;
+//      trackedRecognition.detectionConfidence = potential.first;
       trackedRecognition.location = new RectF(potential.second.getLocation());
-      trackedRecognition.title = potential.second.getTitle();
+//      trackedRecognition.title = potential.second.getTitle();
       trackedRecognition.color = COLORS[trackedObjects.size()];
       trackedObjects.add(trackedRecognition);
 

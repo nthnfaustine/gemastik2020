@@ -16,6 +16,8 @@
 
 package com.example.gemastik;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.Canvas;
@@ -27,6 +29,7 @@ import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.media.ImageReader.OnImageAvailableListener;
 import android.os.SystemClock;
+import android.util.Log;
 import android.util.Size;
 import android.util.TypedValue;
 import android.view.View;
@@ -68,6 +71,8 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
   OverlayView trackingOverlay;
   private Integer sensorOrientation;
 
+  private Integer jumlahOrang;
+
   private Detector detector;
 
   private long lastProcessingTimeMs;
@@ -91,8 +96,8 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
     final float textSizePx =
         TypedValue.applyDimension(
             TypedValue.COMPLEX_UNIT_DIP, TEXT_SIZE_DIP, getResources().getDisplayMetrics());
-    borderedText = new BorderedText(textSizePx);
-    borderedText.setTypeface(Typeface.MONOSPACE);
+//    borderedText = new BorderedText(textSizePx);
+//    borderedText.setTypeface(Typeface.MONOSPACE);
 
     tracker = new MultiBoxTracker(this);
 
@@ -190,7 +195,7 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
             final Paint paint = new Paint();
             paint.setColor(Color.RED);
             paint.setStyle(Style.STROKE);
-            paint.setStrokeWidth(2.0f);
+            paint.setStrokeWidth(1.0f);
 
             float minimumConfidence = MINIMUM_CONFIDENCE_TF_OD_API;
             switch (MODE) {
@@ -203,14 +208,19 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
                 new ArrayList<Detector.Recognition>();
 
             for (final Detector.Recognition result : results) {
-              final RectF location = result.getLocation();
-              if (location != null && result.getConfidence() >= minimumConfidence) {
-                canvas.drawRect(location, paint);
+              if (result.getTitle().equals("person")){
+                final RectF location = result.getLocation();
+                if (location != null && result.getConfidence() >= minimumConfidence) {
+                  canvas.drawRect(location, paint);
 
-                cropToFrameTransform.mapRect(location);
+                  cropToFrameTransform.mapRect(location);
 
-                result.setLocation(location);
-                mappedRecognitions.add(result);
+                  result.setLocation(location);
+                  mappedRecognitions.add(result);
+                  jumlahOrang = mappedRecognitions.size();
+                  Log.d("JUMLAH", jumlahOrang.toString());
+                  Log.d("JENIS: ", result.getTitle());
+                }
               }
             }
 
@@ -252,7 +262,30 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
 
   }
 
-  // Which detection model to use: by default uses Tensorflow Object Detection API frozen
+  public void btnPrediksi(View view) {
+    Log.d("PENCET", "KEPENCET");
+    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+    alertDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener(){
+
+      @Override
+      public void onClick(DialogInterface dialog, int which) {
+        // TODO: 16/10/20 blablabla
+        finish();
+      }
+    })
+    .setNegativeButton("cancel", new DialogInterface.OnClickListener(){
+
+      @Override
+      public void onClick(DialogInterface dialog, int which) {
+
+      }
+    })
+    .setTitle("Terimakasih telah melapor");
+    AlertDialog alertDialog = alertDialogBuilder.create();
+    alertDialog.show();
+  }
+
+    // Which detection model to use: by default uses Tensorflow Object Detection API frozen
   // checkpoints.
   private enum DetectorMode {
     TF_OD_API;

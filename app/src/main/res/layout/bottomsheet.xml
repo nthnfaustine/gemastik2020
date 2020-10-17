@@ -44,7 +44,7 @@
             android:checked="true"
             android:background="@drawable/secondary_background"
             android:layout_marginEnd="12dp"
-            android:text="Peta Sebaran"
+            android:text="Peta Risiko"
             android:textSize="14sp"
             android:textColor="@color/tulisan_sheet"
             android:button="@null"
