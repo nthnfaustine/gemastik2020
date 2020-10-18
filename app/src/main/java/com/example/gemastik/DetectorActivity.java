@@ -64,6 +64,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -317,7 +318,14 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
         for(int i=0; i<jumlahOrang;i++){
 
           // TODO: 17/10/20 write ke firebase
-//          mDatabase.child("Users")
+          Calendar c = Calendar.getInstance();
+          String kodeLaporan = c.getTime().toString();
+          mDatabase.child("koleksiLaporan").child(kodeLaporan + i).child("latitude").setValue(lat);
+          mDatabase.child("koleksiLaporan").child(kodeLaporan + i).child("longitude").setValue(lon);
+          mDatabase.child("koleksiLaporan").child(kodeLaporan + i).child("density").setValue(den);
+          Log.d("Lokasi", "AMAN");
+
+
             
 //            json.put("density", den);
 //            json.put("latitude", lat);
@@ -335,10 +343,6 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
 //              e.printStackTrace();
 //            }
         }
-
-
-
-
         // TODO: 16/10/20 blablabla
         finish();
       }

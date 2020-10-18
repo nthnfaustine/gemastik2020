@@ -33,10 +33,10 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
-import com.google.android.libraries.places.api.net.PlacesClient
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.firebase.database.*
 import com.google.maps.android.heatmaps.HeatmapTileProvider
 import com.google.maps.android.heatmaps.WeightedLatLng
 import kotlinx.android.synthetic.main.bottomsheet.view.*
@@ -44,6 +44,8 @@ import org.json.JSONArray
 import org.json.JSONObject
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.math.cos
+import kotlin.math.pow
 
 @Suppress("DEPRECATION")
 class MapFragment: Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
@@ -76,10 +78,18 @@ class MapFragment: Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListen
     private var heatmapOverlay: TileOverlay? = null
     private var stateMap: Int = 1
 
+    // default value
     private var bulan: String = "01"
     private var tangalSekarang: String = "11"
 
+    // view dari legenda risiko
     private var risikoRevisi: View? = null
+
+    private var database: FirebaseDatabase = FirebaseDatabase.getInstance()
+    private var myRef: DatabaseReference = database.reference
+
+    private val dataLaporan: ArrayList<WeightedLatLng> = arrayListOf()
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?{
         rootView = inflater.inflate(R.layout.activity_maps, container, false)
@@ -328,8 +338,13 @@ class MapFragment: Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListen
             rbRealtime!!.isChecked = false
             rbPrediksi!!.isChecked = true
 
+
+
             if(stateMap != 3){
                 risikoRevisi!!.visibility = View.GONE
+                val gbkLatLng = LatLng(-6.218335, 106.802216)
+                map.animateCamera(CameraUpdateFactory.newLatLngZoom(gbkLatLng, 15f))
+
                 circleTangerang!!.remove()
                 circleTangsel!!.remove()
                 circleJakut!!.remove()
@@ -357,10 +372,17 @@ class MapFragment: Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListen
 
     private fun modeHeatmap(){
         val data = generateHeatMapData()
+        generateHeatMapDataLaporan(dataLaporan)
+
+//        Log.d("panjang", dataLaporan.size.toString())
+//        Log.d("panjangSatu", data.size.toString())
+//        Log.d("isi", dataLaporan[0].toString())
+
+        val mergedData = data + dataLaporan
 
         val heatMapProvider = HeatmapTileProvider.Builder()
-            .weightedData(data) // load our weighted data
-            .radius(50) // optional, in pixels, can be anything between 20 and 50
+            .weightedData(mergedData) // load our weighted data
+            .radius(35) // optional, in pixels, can be anything between 20 and 50
             .maxIntensity(1000.0) // set the maximum intensity
             .build()
 
@@ -447,6 +469,37 @@ class MapFragment: Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListen
         return data
     }
 
+    private fun generateHeatMapDataLaporan(list: ArrayList<WeightedLatLng>){
+
+        // Read from the database
+        myRef.child("koleksiLaporan")
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+
+            override fun onCancelled(error: DatabaseError) {
+                // Failed to read value
+                Log.w("TAG", "Failed to read value.", error.toException())
+            }
+
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                list.clear()
+
+                for (laporan in dataSnapshot.children) {
+                    val lati:Double = laporan.child("latitude").value.toString().toDouble()
+                    val loni:Double = laporan.child("longitude").value.toString().toDouble()
+                    val deni:Double = laporan.child("density").value.toString().toDouble()
+
+                    val weightedLatLng = WeightedLatLng(LatLng(lati, loni), deni)
+                    list.add(weightedLatLng)
+
+                }
+
+
+            }
+
+        })
+        Log.d("BOS", list.size.toString())
+    }
+
     private fun generatePrediksiData(tanggal: String): ArrayList<WeightedLatLng> {
         val data = ArrayList<WeightedLatLng>()
 
@@ -459,7 +512,7 @@ class MapFragment: Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListen
 
 //                Log.d("TANGGAL", tanggal + tanggalJson)
 
-                if(tanggal.equals(tanggalJson)){
+                if(tanggal == tanggalJson){
                     val lat = entry.getDouble("latitude")
                     val lon = entry.getDouble("longitude")
                     val density = entry.getDouble("density")
@@ -531,8 +584,7 @@ class MapFragment: Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListen
             Places.initialize(context!!, getString(R.string.google_maps_key))
         }
 
-        val placesClient: PlacesClient =
-            Places.createClient(context!!)
+
 
         val autocompleteFragment = childFragmentManager.findFragmentById(R.id.place_autocomplete) as AutocompleteSupportFragment
 
@@ -577,7 +629,7 @@ class MapFragment: Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListen
                 if(stateMap == 3){
                     heatmapOverlay!!.remove()
                     Log.d("testTanggal", "x$tangalSekarang-$bulan")
-                    val format: String = "$tangalSekarang-$bulan"
+                    val format = "$tangalSekarang-$bulan"
                     modePrediksi(format)
                 }
 
@@ -591,6 +643,13 @@ class MapFragment: Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListen
             }, jam, menit, true)
             tpd.show()
         }
+    }
+
+    private fun getHeatMapRadius(latCor:Double): Double{
+        val distanceInMeter = 3
+        val meterPerPixel = 156543.03392 * cos(latCor * Math.PI / 180) / 2.0.pow(12.0)
+
+        return distanceInMeter / meterPerPixel
     }
     
 }
