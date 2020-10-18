@@ -503,7 +503,7 @@ class MapFragment: Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListen
     private fun generatePrediksiData(tanggal: String): ArrayList<WeightedLatLng> {
         val data = ArrayList<WeightedLatLng>()
 
-        val jsonData = getJsonDataFromAsset("prediksiDataset.json")
+        val jsonData = getJsonDataFromAsset("datasetPrediksi.json")
         jsonData?.let {
             for (i in 0 until it.length()) {
 
@@ -516,9 +516,10 @@ class MapFragment: Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListen
                     val lat = entry.getDouble("latitude")
                     val lon = entry.getDouble("longitude")
                     val density = entry.getDouble("density")
+                    val densityBener:Double = (49.8594 * density) + 1747.6
 
                     if (density != 0.0) {
-                        val weightedLatLng = WeightedLatLng(LatLng(lat, lon), density)
+                        val weightedLatLng = WeightedLatLng(LatLng(lat, lon), densityBener)
                         data.add(weightedLatLng)
                     }
                 }
