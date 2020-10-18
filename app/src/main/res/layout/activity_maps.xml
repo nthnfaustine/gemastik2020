@@ -24,6 +24,7 @@
     </androidx.cardview.widget.CardView>
 
     <LinearLayout
+        android:id="@+id/risiko_revisi"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/round_rect_putih"
@@ -57,6 +58,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="RISIKO TINGGI"
+                android:textSize="12sp"
                 android:textColor="@color/black"
                 android:layout_marginStart="4dp"
                 android:fontFamily="@font/montserrat"/>
@@ -77,6 +79,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="RISIKO SEDANG"
+                android:textSize="12sp"
                 android:textColor="@color/black"
                 android:layout_marginStart="4dp"
                 android:fontFamily="@font/montserrat"/>
@@ -96,6 +99,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="12sp"
                 android:text="RISIKO RENDAH"
                 android:textColor="@color/black"
                 android:layout_marginStart="4dp"
@@ -116,6 +120,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="12sp"
                 android:text="RISIKO SANGAT RENDAH"
                 android:textColor="@color/black"
                 android:layout_marginStart="4dp"

@@ -16,6 +16,7 @@
 
 package com.example.gemastik;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
@@ -27,6 +28,7 @@ import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.RectF;
 import android.graphics.Typeface;
+import android.location.Location;
 import android.media.ImageReader.OnImageAvailableListener;
 import android.os.SystemClock;
 import android.util.Log;
@@ -41,10 +43,25 @@ import com.example.gemastik.customview.OverlayView.DrawCallback;
 import com.example.gemastik.env.BorderedText;
 import com.example.gemastik.env.ImageUtils;
 import com.example.gemastik.env.Logger;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.tensorflow.lite.examples.detection.tflite.Detector;
 import org.tensorflow.lite.examples.detection.tflite.TFLiteObjectDetectionAPIModel;
 import com.example.gemastik.tracking.MultiBoxTracker;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.gson.JsonObject;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -90,6 +107,14 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
   private MultiBoxTracker tracker;
 
   private BorderedText borderedText;
+
+  private FusedLocationProviderClient fusedLocationProviderClient;
+
+  private double lat;
+  private double lon;
+
+  private DatabaseReference mDatabase;
+
 
   @Override
   public void onPreviewSizeChosen(final Size size, final int rotation) {
@@ -262,13 +287,58 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
 
   }
 
+  @SuppressLint("MissingPermission")
   public void btnPrediksi(View view) {
     Log.d("PENCET", "KEPENCET");
+
+    mDatabase = FirebaseDatabase.getInstance().getReference();
+    int den = 200;
+
+//    JSONObject json = new JSONObject();
+
+    fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+    fusedLocationProviderClient.getLastLocation()
+            .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+              @Override
+              public void onSuccess(Location location) {
+                lat = location.getLatitude();
+                lon = location.getLongitude();
+              }
+            });
+
+//    File x = this.getFilesDir();
+
     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
     alertDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener(){
 
       @Override
       public void onClick(DialogInterface dialog, int which) {
+
+        for(int i=0; i<jumlahOrang;i++){
+
+          // TODO: 17/10/20 write ke firebase
+//          mDatabase.child("Users")
+            
+//            json.put("density", den);
+//            json.put("latitude", lat);
+//            json.put("longitude", lon);
+//
+//            String userString = json.toString();
+//            File file = new File(x, "testdoang.json");
+//            try {
+//              Log.d("MASUK", "ff");
+//              FileWriter fileWriter = new FileWriter(file);
+//              BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+//              bufferedWriter.write(userString);
+//              bufferedWriter.close();
+//            } catch (IOException e) {
+//              e.printStackTrace();
+//            }
+        }
+
+
+
+
         // TODO: 16/10/20 blablabla
         finish();
       }

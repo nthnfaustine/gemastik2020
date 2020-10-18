@@ -76,6 +76,11 @@ class MapFragment: Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListen
     private var heatmapOverlay: TileOverlay? = null
     private var stateMap: Int = 1
 
+    private var bulan: String = "01"
+    private var tangalSekarang: String = "11"
+
+    private var risikoRevisi: View? = null
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?{
         rootView = inflater.inflate(R.layout.activity_maps, container, false)
         setHasOptionsMenu(true)
@@ -87,6 +92,7 @@ class MapFragment: Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListen
         initializeRb()
         inisialisasiDatePicker()
 
+        risikoRevisi = rootView.findViewById(R.id.risiko_revisi)
 
         return rootView
     }
@@ -286,6 +292,7 @@ class MapFragment: Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListen
             if(stateMap != 1){
                 heatmapOverlay!!.remove()
                 modePemerintah()
+                risikoRevisi!!.visibility = View.VISIBLE
                 stateMap = 1
             }
         }
@@ -295,7 +302,8 @@ class MapFragment: Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListen
             rbRealtime!!.isChecked = true
             rbPrediksi!!.isChecked = false
 
-            if(stateMap != 2 && stateMap != 3){
+            if(stateMap != 2){
+                risikoRevisi!!.visibility = View.GONE
                 circleTangerang!!.remove()
                 circleTangsel!!.remove()
                 circleJakut!!.remove()
@@ -307,6 +315,9 @@ class MapFragment: Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListen
                 circleCirebon!!.remove()
                 circleBekasi!!.remove()
                 circleDepok!!.remove()
+                if(heatmapOverlay != null){
+                    heatmapOverlay!!.remove()
+                }
                 modeHeatmap()
                 stateMap = 2
             }
@@ -317,7 +328,8 @@ class MapFragment: Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListen
             rbRealtime!!.isChecked = false
             rbPrediksi!!.isChecked = true
 
-            if(stateMap != 3 && stateMap != 2){
+            if(stateMap != 3){
+                risikoRevisi!!.visibility = View.GONE
                 circleTangerang!!.remove()
                 circleTangsel!!.remove()
                 circleJakut!!.remove()
@@ -329,7 +341,11 @@ class MapFragment: Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListen
                 circleCirebon!!.remove()
                 circleBekasi!!.remove()
                 circleDepok!!.remove()
-                modePrediksi()
+                if(heatmapOverlay != null){
+                    heatmapOverlay!!.remove()
+                }
+                val dummy = "1-11"
+                modePrediksi(dummy)
                 stateMap = 3
             }
         }
@@ -351,8 +367,16 @@ class MapFragment: Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListen
         heatmapOverlay = map.addTileOverlay(TileOverlayOptions().tileProvider(heatMapProvider))
     }
 
-    private fun modePrediksi(){
-        modeHeatmap()
+    private fun modePrediksi(tangall: String){
+        val data = generatePrediksiData(tangall)
+
+        val heatMapProvider = HeatmapTileProvider.Builder()
+            .weightedData(data) // load our weighted data
+            .radius(50) // optional, in pixels, can be anything between 20 and 50
+            .maxIntensity(1000.0) // set the maximum intensity
+            .build()
+
+        heatmapOverlay = map.addTileOverlay(TileOverlayOptions().tileProvider(heatMapProvider))
     }
 
     private fun buatCircle(){
@@ -387,6 +411,7 @@ class MapFragment: Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListen
     }
 
     // return data dari json dataset
+
     private fun generateCircleData(): ArrayList<JSONObject>{
         val data = ArrayList<JSONObject>()
 
@@ -416,6 +441,33 @@ class MapFragment: Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListen
                 if (density != 0.0) {
                     val weightedLatLng = WeightedLatLng(LatLng(lat, lon), density)
                     data.add(weightedLatLng)
+                }
+            }
+        }
+        return data
+    }
+
+    private fun generatePrediksiData(tanggal: String): ArrayList<WeightedLatLng> {
+        val data = ArrayList<WeightedLatLng>()
+
+        val jsonData = getJsonDataFromAsset("prediksiDataset.json")
+        jsonData?.let {
+            for (i in 0 until it.length()) {
+
+                val entry = it.getJSONObject(i)
+                val tanggalJson: String = entry.getString("tanggal")
+
+//                Log.d("TANGGAL", tanggal + tanggalJson)
+
+                if(tanggal.equals(tanggalJson)){
+                    val lat = entry.getDouble("latitude")
+                    val lon = entry.getDouble("longitude")
+                    val density = entry.getDouble("density")
+
+                    if (density != 0.0) {
+                        val weightedLatLng = WeightedLatLng(LatLng(lat, lon), density)
+                        data.add(weightedLatLng)
+                    }
                 }
             }
         }
@@ -506,20 +558,30 @@ class MapFragment: Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListen
 
         val c = Calendar.getInstance()
         val yearr = c.get(Calendar.YEAR)
-        val month = c.get(Calendar.MONTH)
-        val day = c.get(Calendar.DATE)
+        bulan = c.get(Calendar.MONTH).toString()
+        tangalSekarang = c.get(Calendar.DATE).toString()
 
         val jam = c.get(Calendar.HOUR_OF_DAY)
         val menit = c.get(Calendar.MINUTE)
 
         tvJam.text = "$jam:$menit"
-        tvDate.text = "$day - $month - $yearr"
+        tvDate.text = "$tangalSekarang - $bulan - $yearr"
 
         tvDate.setOnClickListener {
             val dpd = DatePickerDialog(context!!, DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
                 // set tv nya ke yang dipilih
-                tvDate.text = "$dayOfMonth - $monthOfYear - $year"
-            }, yearr, month, day)
+                bulan = (monthOfYear + 1).toString()
+                tangalSekarang = dayOfMonth.toString()
+                tvDate.text = "$tangalSekarang - $bulan - $year"
+
+                if(stateMap == 3){
+                    heatmapOverlay!!.remove()
+                    Log.d("testTanggal", "x$tangalSekarang-$bulan")
+                    val format: String = "$tangalSekarang-$bulan"
+                    modePrediksi(format)
+                }
+
+            }, yearr, bulan.toInt(), tangalSekarang.toInt())
             dpd.show()
         }
 
