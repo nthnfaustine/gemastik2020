@@ -27,7 +27,6 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.RectF;
-import android.graphics.Typeface;
 import android.location.Location;
 import android.media.ImageReader.OnImageAvailableListener;
 import android.os.SystemClock;
@@ -295,8 +294,6 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
     mDatabase = FirebaseDatabase.getInstance().getReference();
     int den = 200;
 
-//    JSONObject json = new JSONObject();
-
     fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
     fusedLocationProviderClient.getLastLocation()
             .addOnSuccessListener(this, new OnSuccessListener<Location>() {
@@ -306,8 +303,6 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
                 lon = location.getLongitude();
               }
             });
-
-//    File x = this.getFilesDir();
 
     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
     alertDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener(){
@@ -324,24 +319,6 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
           mDatabase.child("koleksiLaporan").child(kodeLaporan + i).child("longitude").setValue(lon);
           mDatabase.child("koleksiLaporan").child(kodeLaporan + i).child("density").setValue(den);
           Log.d("Lokasi", "AMAN");
-
-
-            
-//            json.put("density", den);
-//            json.put("latitude", lat);
-//            json.put("longitude", lon);
-//
-//            String userString = json.toString();
-//            File file = new File(x, "testdoang.json");
-//            try {
-//              Log.d("MASUK", "ff");
-//              FileWriter fileWriter = new FileWriter(file);
-//              BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-//              bufferedWriter.write(userString);
-//              bufferedWriter.close();
-//            } catch (IOException e) {
-//              e.printStackTrace();
-//            }
         }
         // TODO: 16/10/20 blablabla
         finish();

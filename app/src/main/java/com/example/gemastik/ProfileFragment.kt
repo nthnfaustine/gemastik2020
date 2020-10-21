@@ -1,18 +1,15 @@
 package com.example.gemastik
 
 import android.annotation.SuppressLint
-import android.app.Activity.RESULT_OK
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
 import android.location.Address
 import android.location.Geocoder
 import android.location.Location
 import android.os.AsyncTask
 import android.os.Build
 import android.os.Bundle
-import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -32,9 +29,6 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import com.google.mlkit.vision.common.InputImage
-import com.google.mlkit.vision.objects.ObjectDetection
-import com.google.mlkit.vision.objects.defaults.ObjectDetectorOptions
 import kotlinx.android.synthetic.main.ganti_nama.view.*
 import kotlinx.android.synthetic.main.profile_fragment.view.*
 import org.json.JSONObject
@@ -55,7 +49,8 @@ class ProfileFragment: Fragment() {
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var lastLocation: Location
-//    private lateinit var locationCallback: LocationCallback
+
+//    private val storageRef = FirebaseStorage.getInstance().reference
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?{
@@ -70,8 +65,6 @@ class ProfileFragment: Fragment() {
         inisialisasiLokasi()
         inisialisasiTanggal()
 
-
-
         return rootView
     }
 
@@ -79,7 +72,8 @@ class ProfileFragment: Fragment() {
         buttonLapor = rootView.findViewById(R.id.btnLapor)
 
         buttonLapor!!.setOnClickListener {
-            dispatchTakePictureIntent()
+            personDetectionIntent()
+//            dispatchTakeVideoIntent()
         }
     }
 
@@ -87,7 +81,6 @@ class ProfileFragment: Fragment() {
         var TAG = ProfileFragment::class.java.simpleName
         private const val ARG_POSITION: String = "position"
 //        const val REQUEST_VIDEO_CAPTURE = 1
-        const val REQUEST_IMAGE_CAPTURE = 2
         fun newInstance(): ProfileFragment{
             val fragment = ProfileFragment()
             val args = Bundle()
@@ -105,8 +98,7 @@ class ProfileFragment: Fragment() {
 //        }
 //    }
 
-    private fun dispatchTakePictureIntent() {
-        val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+    private fun personDetectionIntent(){
         try {
             val builder = AlertDialog.Builder(context!!)
             builder.setTitle("Laporkan")
@@ -114,50 +106,26 @@ class ProfileFragment: Fragment() {
             builder.setPositiveButton("Ok"){_, _ ->
                 val intent = Intent(context, DetectorActivity::class.java)
                 startActivity(intent)
-//                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
             }
             builder.setNegativeButton("Cancel"){_, _ -> }
             builder.show()
 
-        } catch (e: ActivityNotFoundException) {
-            // display error state to the user
-        }
+        } catch (e: ActivityNotFoundException) { }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            val imageBitmap = data!!.extras!!.get("data") as Bitmap
-
-            // TODO: 15/10/20 ml nya
-
-            // Options
-            val options = ObjectDetectorOptions.Builder()
-                .setDetectorMode(ObjectDetectorOptions.SINGLE_IMAGE_MODE)
-                .enableClassification()
-                .enableMultipleObjects()
-                .build()
-
-            // Convert bitmap ke firebasevisionimage
-            val image = InputImage.fromBitmap(imageBitmap, 0)
-
-            // Detect mukanya
-            val detector = ObjectDetection.getClient(options)
-
-            detector.process(image)
-                .addOnSuccessListener { detectedObjects ->
-                    var personCounter = 0
-                    for (obj in detectedObjects) {
-                        personCounter += 1
-                        obj.boundingBox
-                    }
-                    Toast.makeText(context, "Person detected: $personCounter", Toast.LENGTH_SHORT).show()
-                    Log.d("HASIL", personCounter.toString())
-                }
-                .addOnFailureListener { e ->
-                    Log.d("Result ml", e.toString())
-                }
-        }
-    }
+//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//        if (requestCode == REQUEST_VIDEO_CAPTURE && resultCode == RESULT_OK) {
+//            val c = Calendar.getInstance()
+//            val time = c.time
+//
+//                        val videoUri: Uri? = data!!.data
+//            val laporanRef: StorageReference = storageRef.child("videoLaporan$time")
+//
+//            laporanRef.putFile(videoUri!!)
+//                .addOnSuccessListener { Log.d("UPLOAD", "berhasil") }
+//                .addOnFailureListener {Log.d("UPLOAD", "gagal") }
+//        }
+//    }
 
     @SuppressLint("StaticFieldLeak")
     inner class MyAsyncTask: AsyncTask<String, String, String>() {

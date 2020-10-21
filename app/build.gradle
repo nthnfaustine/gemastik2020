@@ -38,13 +38,13 @@ android {
 
 // import DownloadModels task
 project.ext.ASSET_DIR = projectDir.toString() + '/src/main/assets'
-project.ext.TMP_DIR   = project.buildDir.toString() + '/downloads'
+project.ext.TMP_DIR = project.buildDir.toString() + '/downloads'
 
 // Download default models; if you wish to use your own models then
 // place them in the "assets" directory and comment out this line.
 //apply from: "download_model.gradle"
 
-apply from:'download_model.gradle'
+apply from: 'download_model.gradle'
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
@@ -56,6 +56,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth:19.3.1'
     implementation 'com.google.firebase:firebase-database:19.5.0'
     implementation project(path: ':lib_interpreter')
+    implementation 'com.google.firebase:firebase-storage:19.2.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
@@ -75,8 +76,6 @@ dependencies {
 //    implementation 'com.google.firebase:firebase-ml-vision-object-detection-model:19.0.6'
 //    implementation "com.google.android.gms:play-services-vision:20.1.1"
 //    implementation "com.google.android.gms:play-services-vision-common:19.1.1"
-
-
 
 
 }

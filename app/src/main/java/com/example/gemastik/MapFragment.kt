@@ -44,8 +44,6 @@ import org.json.JSONArray
 import org.json.JSONObject
 import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.math.cos
-import kotlin.math.pow
 
 @Suppress("DEPRECATION")
 class MapFragment: Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
@@ -108,12 +106,9 @@ class MapFragment: Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListen
     }
 
     companion object{
-//        var TAG = MapFragment::class.java.simpleName
         private const val ARG_POSITION: String = "position"
         const val LOCATION_PERMISSION_REQUEST_CODE = 1
         private const val REQUEST_CHECK_SETTINGS = 2
-//        private const val PLACE_PICKER_REQUEST = 3
-//        private const val AUTOCOMPLETE_REQUEST_CODE = 4
         fun newInstance(): MapFragment{
             val fragment = MapFragment()
             val args = Bundle()
@@ -164,40 +159,10 @@ class MapFragment: Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListen
             if (location != null) {
                 lastLocation = location
                 val currentLatLng = LatLng(location.latitude, location.longitude)
-//                placeMarkerOnMap(currentLatLng)
                 map.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 12f))
             }
         }
     }
-
-//    private fun placeMarkerOnMap(location: LatLng) {
-//        val markerOptions = MarkerOptions().position(location)
-//
-//        val titleStr = getAddress(location)  // add these two lines
-//        markerOptions.title(titleStr)
-//
-//        map.addMarker(markerOptions)
-//    }
-
-//    private fun getAddress(latLng: LatLng): String {
-//        val geocoder = Geocoder(activity as AppCompatActivity)
-//        val addresses: List<Address>?
-//        val address: Address?
-//        var addressText = ""
-//
-//        try {
-//            addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1)
-//            if (null != addresses && addresses.isNotEmpty()) {
-//                address = addresses[0]
-//                for (i in 0 until address.maxAddressLineIndex) {
-//                    addressText += if (i == 0) address.getAddressLine(i) else "\n" + address.getAddressLine(i)
-//                }
-//            }
-//        } catch (e: IOException) {
-//            Log.e("MapsActivity", e.localizedMessage!!)
-//        }
-//        return addressText
-//    }
 
     private fun startLocationUpdates() {
         if (ActivityCompat.checkSelfPermission(rootView.context,
@@ -253,16 +218,6 @@ class MapFragment: Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListen
                 startLocationUpdates()
             }
         }
-//        if (requestCode == PLACE_PICKER_REQUEST) {
-//            if (resultCode == RESULT_OK) {
-//                val place = PlacePicker.getPlace(activity, data)
-//                var addressText = place.name.toString()
-//                addressText += "\n" + place.address.toString()
-//
-//                placeMarkerOnMap(place.latLng)
-//            }
-//        }
-
     }
 
     override fun onPause() {
@@ -277,18 +232,6 @@ class MapFragment: Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListen
         }
     }
 
-//    private fun loadPlacePicker() {
-//        val builder = PlacePicker.IntentBuilder()
-//
-//        try {
-//            startActivityForResult(builder.build(activity), PLACE_PICKER_REQUEST)
-//        } catch (e: GooglePlayServicesRepairableException) {
-//            e.printStackTrace()
-//        } catch (e: GooglePlayServicesNotAvailableException) {
-//            e.printStackTrace()
-//        }
-//    }
-
     private fun initializeRb(){
         rbPemerintah = rootView.findViewById(R.id.rb_pemerintah)
         rbRealtime = rootView.findViewById(R.id.rb_realtime)
@@ -302,7 +245,8 @@ class MapFragment: Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListen
             if(stateMap != 1){
                 heatmapOverlay!!.remove()
                 modePemerintah()
-                risikoRevisi!!.visibility = View.VISIBLE
+//                risikoRevisi!!.visibility = View.VISIBLE
+                risikoRevisi!!.animate().alpha(1.0f)
                 stateMap = 1
             }
         }
@@ -313,7 +257,9 @@ class MapFragment: Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListen
             rbPrediksi!!.isChecked = false
 
             if(stateMap != 2){
-                risikoRevisi!!.visibility = View.GONE
+//                risikoRevisi!!.startAnimation(R.animator.slide_in_left, R.animator.slide_out_right)
+//                risikoRevisi!!.visibility = View.GONE
+                risikoRevisi!!.animate().alpha(0.0f)
                 circleTangerang!!.remove()
                 circleTangsel!!.remove()
                 circleJakut!!.remove()
@@ -341,7 +287,7 @@ class MapFragment: Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListen
 
 
             if(stateMap != 3){
-                risikoRevisi!!.visibility = View.GONE
+                risikoRevisi!!.animate().alpha(0.0f)
                 val gbkLatLng = LatLng(-6.218335, 106.802216)
                 map.animateCamera(CameraUpdateFactory.newLatLngZoom(gbkLatLng, 15f))
 
@@ -373,10 +319,6 @@ class MapFragment: Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListen
     private fun modeHeatmap(){
         val data = generateHeatMapData()
         generateHeatMapDataLaporan(dataLaporan)
-
-//        Log.d("panjang", dataLaporan.size.toString())
-//        Log.d("panjangSatu", data.size.toString())
-//        Log.d("isi", dataLaporan[0].toString())
 
         val mergedData = data + dataLaporan
 
@@ -479,7 +421,6 @@ class MapFragment: Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListen
                 // Failed to read value
                 Log.w("TAG", "Failed to read value.", error.toException())
             }
-
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 list.clear()
 
@@ -490,10 +431,7 @@ class MapFragment: Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListen
 
                     val weightedLatLng = WeightedLatLng(LatLng(lati, loni), deni)
                     list.add(weightedLatLng)
-
                 }
-
-
             }
 
         })
@@ -509,8 +447,6 @@ class MapFragment: Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListen
 
                 val entry = it.getJSONObject(i)
                 val tanggalJson: String = entry.getString("tanggal")
-
-//                Log.d("TANGGAL", tanggal + tanggalJson)
 
                 if(tanggal == tanggalJson){
                     val lat = entry.getDouble("latitude")
@@ -549,10 +485,8 @@ class MapFragment: Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListen
         locationCallback = object : LocationCallback() {
             override fun onLocationResult(p0: LocationResult) {
                 super.onLocationResult(p0)
-
                 lastLocation = p0.lastLocation
-                // TODO: 09/09/20 last locationnya DISINI YA
-//                placeMarkerOnMap(LatLng(lastLocation.latitude, lastLocation.longitude))
+                // TODO: last locationnya
             }
         }
     }
@@ -598,7 +532,6 @@ class MapFragment: Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListen
             }
 
             override fun onError(status: Status) {
-                // TODO: Handle the error.
                 Log.i("TEMPAT", "An error occurred: $status")
             }
         })
@@ -646,11 +579,11 @@ class MapFragment: Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListen
         }
     }
 
-    private fun getHeatMapRadius(latCor:Double): Double{
-        val distanceInMeter = 3
-        val meterPerPixel = 156543.03392 * cos(latCor * Math.PI / 180) / 2.0.pow(12.0)
-
-        return distanceInMeter / meterPerPixel
-    }
+//    private fun getHeatMapRadius(latCor:Double): Double{
+//        val distanceInMeter = 3
+//        val meterPerPixel = 156543.03392 * cos(latCor * Math.PI / 180) / 2.0.pow(12.0)
+//
+//        return distanceInMeter / meterPerPixel
+//    }
     
 }

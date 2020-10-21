@@ -1,3 +1,5 @@
+// TODO: ini class buat atur bottom navigation bar dan animasinya
+
 package com.example.gemastik
 
 import android.os.Bundle
@@ -22,9 +24,6 @@ class MainActivity : AppCompatActivity() {
 
         if(item.itemId == R.id.navigation_map && activeFragment != 2){
             tb.title = "MAP"
-//            val color = resources.getColor(R.color.colorPrimary)
-//            tb.setBackgroundColor(color)
-//            tb.setTitleTextColor(resources.getColor(R.color.white))
             val mapFrag = MapFragment.newInstance()
             nextFragment = 2
             openFragment(mapFrag)
@@ -33,9 +32,6 @@ class MainActivity : AppCompatActivity() {
 
         else if(item.itemId == R.id.navigation_profile && activeFragment != 1){
             tb.title = "PROFILE"
-//            val color = resources.getColor(R.color.transparent)
-//            tb.setBackgroundColor(color)
-//            tb.setTitleTextColor(resources.getColor(R.color.transparent))
             val profileFragment = ProfileFragment.newInstance()
             nextFragment = 1
             openFragment(profileFragment)
@@ -91,16 +87,6 @@ class MainActivity : AppCompatActivity() {
             super.onBackPressed()
         }
     }
-
-//    private fun setItem(){
-//        val bottomNavigation: BottomNavigationView = findViewById(R.id.navigationView)
-//        bottomNavigation.selectedItemId = R.id.navigation_team
-//        activeFragment = 1
-//        nextFragment = 1
-//        tb.title = ""
-//        tb.setTitleTextColor(resources.getColor(R.color.transparent))
-//        openFragment(TeamFragment.newInstance())
-//    }
 
     private fun toHome(){
         val bottomNavigation: BottomNavigationView = findViewById(R.id.navigationView)

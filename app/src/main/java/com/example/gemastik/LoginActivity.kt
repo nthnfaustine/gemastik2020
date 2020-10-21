@@ -1,8 +1,9 @@
+@file:Suppress("UseExpressionBody")
+
 package com.example.gemastik
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.view.View
 import android.widget.EditText
 import android.widget.Toast
@@ -12,6 +13,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 
 
+@Suppress("UseExpressionBody", "UseExpressionBody", "UNUSED_PARAMETER")
 class LoginActivity: AppCompatActivity() {
 
     private var mAuth: FirebaseAuth? = null
